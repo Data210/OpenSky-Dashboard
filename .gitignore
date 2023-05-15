@@ -1,0 +1,9 @@
+.ipynb_checkpoints
+__pycache__
+.vscode
+env
+node_modules
+.env
+.mapbox_token
+*.ipynb
+*.png
