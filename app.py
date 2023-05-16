@@ -7,10 +7,13 @@ import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 import pymongo
+import os
 
 MONGODB_URI = "mongodb+srv://admin:iloveplanes@ethan-cluster.cr8xduf.mongodb.net/"
 client = pymongo.MongoClient(MONGODB_URI)
 
+api_username = os.getenv("OPENSKY_USERNAME")
+api_password = os.getenv("OPENSKY_PASSWORD")
 
 app = Flask(__name__)
 
@@ -21,7 +24,7 @@ def get_current_states_v3(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
     payload = {}
     headers = {'Cookie': 'XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2'}
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request("GET", url, headers=headers, data=payload,auth=(api_username, api_password))
     if response.text == None or response.status_code == 404 or response.status_code == 503:
         print(response.text)
     decoded = json.loads(response.text)
