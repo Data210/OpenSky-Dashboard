@@ -177,7 +177,7 @@ def get_updated_graph_data():
     print("Getting data")
     #fig = plot_tracks(get_tracks(get_current_states(20)))
     #data = get_current_states_v2(1000)
-    data = get_current_states_v3()
+    data = get_current_states_v2()
     fig = plot_states(data)
     div = fig.to_html(full_html=False,include_plotlyjs=False)
     print("Returning graph")
