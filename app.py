@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pymongo
 
-MONGODB_URI = "mongodb://cosmos-db-mongo-account:GLrOSamXyH1M3rqJ8uFq038bYRfyeAhDkAbgDasbTOjUJZUOShgvzK8qJaPsAG6zMQ6P4JzyPketACDbHUFgqA==@cosmos-db-mongo-account.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false"
+MONGODB_URI = "mongodb+srv://admin:iloveplanes@ethan-cluster.cr8xduf.mongodb.net/"
 client = pymongo.MongoClient(MONGODB_URI)
 
 
@@ -156,7 +156,7 @@ def index():
     # Create a Plotly figure
     # Convert the figure to HTML div
     #fig = plot_tracks(get_tracks(get_current_states(20)))
-    fig = plot_states(get_current_states_v2(1000))
+    fig = plot_states(get_current_states_v2())
     div = fig.to_html(full_html=False,include_plotlyjs=False,)
 
     return render_template('index.html', plot_div=div)
