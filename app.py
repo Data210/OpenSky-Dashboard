@@ -113,6 +113,7 @@ def plot_altitude(df):
     # fig = px.line(df, x='time', y='baro_altitude')
     layout = go.Layout(
     title="Altitude",
+    titlefont={'color':"#FFFFFF"},
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',  # Sets background color to transparent
     xaxis=dict(
@@ -130,8 +131,11 @@ def plot_altitude(df):
         l=0, #left margin
         r=0, #right margin
         b=0, #bottom margin
-        t=0  #top margin
-    )
+        t=30  #top margin
+    ),
+    autosize=False,
+    width=520,
+    height=390,
 )
 
     fig = go.Figure(

@@ -298,11 +298,23 @@
         var map_var = {{ graphJSON| safe }};
         var config = { displayModeBar: false, responsive: true };
         var map = document.getElementById('geo-graph');
+        var zoom = 0
+
         Plotly.setPlotConfig(config);
         Plotly.plot('geo-graph', map_var);
+        map.on('plotly_relayout', function(eventdata){
+            console.log(eventdata)
+            zoom = eventdata['mapbox.zoom']
+        })
+
         map.on('plotly_click', function (data) {
             let icao24 = data.points[0].customdata[0]
             console.log(`Getting data for ${icao24}`)
+
+            map.layout.mapbox.center.lon = data.points['0'].lon
+            map.layout.mapbox.center.lat = data.points['0'].lat
+            Plotly.redraw('geo-graph')
+            
             $('#flights-table-body').addClass('animate-pulse')
             $.post('/flight-data/' + icao24, function (response) {
                 flight_data = JSON.parse(response)
