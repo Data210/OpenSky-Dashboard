@@ -146,12 +146,16 @@ def plot_states(df):
     token = open(".mapbox_token").read() # you need your own token
     fig = go.Figure()
     fig = go.Figure(go.Scattermapbox( mode = "markers", lon = df['longitude'], lat = df['latitude'], marker = {'size': 10, 'symbol': "airport",'angle':rotation_angles,'allowoverlap':True}, customdata=df[['icao24','callsign','origin_country','latitude','longitude','baro_altitude']], hovertemplate='<br>'.join([ 'ICAO24: %{customdata[0]}', 'Callsign: %{customdata[1]}', 'Origin_Country: %{customdata[2]}', 'Latitude: %{customdata[3]}', 'Longitude: %{customdata[4]}', 'Altitude: %{customdata[5]}' ]) ))
-    fig.update_layout( mapbox = { 'accesstoken': token, 'style': "outdoors", 'zoom': 0}, showlegend = False)
+    fig.update_layout( mapbox = { 'accesstoken': token, 'style': "dark", 'zoom': 0}, showlegend = False)
     fig.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        margin={"r": 5, "t": 0, "l": 5, "b": 0}
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+
         #coastlinecolor = '#ffaaaa'
+    )
+    fig.update_geos(
+        oceancolor = '#ff0000'
     )
     # fig = px.scatter_geo(df,
     #               lat="latitude",
