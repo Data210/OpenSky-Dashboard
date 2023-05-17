@@ -122,6 +122,7 @@ def plot_states(df):
     fig.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
+        margin={"r": 5, "t": 0, "l": 5, "b": 0}
         #coastlinecolor = '#ffaaaa'
     )
     # fig = px.scatter_geo(df,
