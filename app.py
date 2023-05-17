@@ -7,6 +7,7 @@ import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 import pymongo
+import time
 import os
 
 MONGODB_URI = "mongodb+srv://admin:iloveplanes@ethan-cluster.cr8xduf.mongodb.net/"
@@ -68,6 +69,25 @@ def get_current_states(number: int = 0):
         else:
             icaos = [state[0] for state in states]
         return icaos
+
+def get_flights(icao24: str):
+    end_time = int(time.time())
+    begin_time = end_time - 3600 * 24
+    url = f"https://opensky-network.org/api/flights/aircraft?icao24={icao24}&begin={begin_time}&end={end_time}"
+    payload = {}
+    headers = {'Cookie': 'XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2'}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    if response.text == None or response.status_code == 404 or response.status_code == 503:
+        print(response.text)
+        return df
+    
+    decoded = json.loads(response.text)
+    print(decoded)
+    df = pd.DataFrame(decoded, columns = ["icao24","firstSeen","estDepartureAirport",
+                       "lastSeen","estArrivalAirport","callsign",
+                       "estDepartureAirportHorizDistance","estDepartureAirportVertDistance","estArrivalAirportHorizDistance"
+                       "estArrivalAirportVertDistance","departureAirportCandidatesCount","arrivalAirportCandidatesCount"])
+    return df
 
 def get_tracks(icao24_list: list):
     df = pd.DataFrame(columns = ["time","latitude","longitude","baro_altitude","true_track","on_ground","icao24","startTime","endTime"])
@@ -161,14 +181,22 @@ def index():
     #fig = plot_tracks(get_tracks(get_current_states(20)))
     fig = plot_states(get_current_states_v2())
     div = fig.to_html(full_html=False,include_plotlyjs=False,)
-
-    return render_template('index.html', plot_div=div)
+    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('index.html', plot_div=div, graphJSON=graphJSON)
 
 @app.route('/graph-data', methods=['POST'])
 def graph_data():
     # Retrieve or generate the updated graph data
     data = get_updated_graph_data()
 
+    # Return the graph data as JSON
+    return data
+
+@app.route('/flight-data/<icao24>', methods=['POST'])
+def flight_data(icao24):
+    # Retrieve or generate the updated graph data
+    df = get_flights(icao24)
+    data = df.to_json(orient="records")
     # Return the graph data as JSON
     return data
 
