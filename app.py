@@ -211,15 +211,14 @@ def plot_tracks(df):
                     lakecolor='LightBlue')
     return fig
 
+def initalise_graph():
+    fig = plot_states(get_current_states_v2())
+    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
 @app.route('/')
 def index():
-    # Create a Plotly figure
-    # Convert the figure to HTML div
-    #fig = plot_tracks(get_tracks(get_current_states(20)))
-    fig = plot_states(get_current_states_v2())
-    div = fig.to_html(full_html=False,include_plotlyjs=False,)
-    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('index.html', plot_div=div, graphJSON=graphJSON)
+    return render_template('index.html')
 
 @app.route('/graph-data', methods=['POST'])
 def graph_data():
