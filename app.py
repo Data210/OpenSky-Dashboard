@@ -110,7 +110,35 @@ def get_tracks(icao24_list: list):
     return df
 
 def plot_altitude(df):
-    fig = px.line(df, x='time', y='baro_altitude')
+    # fig = px.line(df, x='time', y='baro_altitude')
+    layout = go.Layout(
+    title="Altitude",
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)',  # Sets background color to transparent
+    xaxis=dict(
+        linecolor="#FFFFFF",
+        color="#FFFFFF",  # Sets color of X-axis line
+        showgrid=False,
+        showticklabels=False  # Removes X-axis grid lines
+    ),
+    yaxis=dict( 
+        linecolor="#FFFFFF",
+        color="#FFFFFF",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),
+     margin=go.layout.Margin(
+        l=0, #left margin
+        r=0, #right margin
+        b=0, #bottom margin
+        t=0  #top margin
+    )
+)
+
+    fig = go.Figure(
+        data=go.Scatter(x=df['time'], y=df['baro_altitude'],line_color='#ff675f'),
+        layout=layout
+    )   
+
     return fig
 
 def plot_states(df):

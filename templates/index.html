@@ -219,10 +219,10 @@
         </div>
     </div>
 
-    <div class="grid grid-rows-4 grid-cols-4 h-full gap-6 p-6">
+    <div class="grid grid-rows-4 grid-cols-3 h-full gap-6 p-6">
 
 
-        <div class="row-span-full col-span-3 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
+        <div class="row-span-full col-span-2 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
             <!-- Embed the Plotly figure -->
             <div class="w-full h-full grid content-stretch justify-stretch" id="geo-graph">
             </div>
@@ -272,51 +272,9 @@
             </div>
         </div>
         <div class="row-span-2 col-span-1 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
-            <div class="row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Departure Airport
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Departed At
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Arrival Airport
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Last Seen
-                            </th>
-                            <!-- <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
-                        </th> -->
-                        </tr>
-                    </thead>
-                    <tbody id="tracks-graph-body">
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td>
-                            <td class="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td class="px-6 py-4">
-                                $2999
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg" id="tracks-graph-body">
             </div>
         </div>
-
-        <div class="w-full h-full grid content-stretch justify-stretch row-span-full col-span-3" id="line-graph">
-        </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
@@ -372,7 +330,7 @@
                 line_data = JSON.parse(response)
                 // Update the graph with the received data
                 line_data.layout['uirevision'] = true
-                Plotly.react('line-graph', line_data.data, line_data.layout);
+                Plotly.react('tracks-graph-body', line_data.data, line_data.layout);
                 // $('#line-graph').html(response)
             });
         });
