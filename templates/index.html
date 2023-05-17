@@ -61,11 +61,11 @@
             Show navigation
         </button>
     </div>
-    
+
     <button data-state="true"
-    class="bg-red-500 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full mx-auto block data-[state=true]:bg-green-500"
-    id="update-button">Update
-    Graph</button>
+        class="bg-red-500 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full mx-auto block data-[state=true]:bg-green-500"
+        id="update-button">Update
+        Graph</button>
 
     <div class="grid grid-rows-5 grid-cols-4 h-full">
 
@@ -270,6 +270,9 @@
             </table>
         </div>
 
+        <div class="w-full h-full grid content-stretch justify-stretch row-span-full col-span-3" id="line-graph">
+        </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
@@ -319,6 +322,13 @@
                     )
                 }
             });
+            $.post('/track-data/' + icao24, function (response) {
+                line_data = JSON.parse(response)
+                // Update the graph with the received data
+                line_data.layout['uirevision'] = true
+                Plotly.react('line-graph', line_data.data, line_data.layout);
+                // $('#line-graph').html(response)
+            });
         });
     </script>
 
@@ -335,8 +345,6 @@
                         // Update the graph with the received data
                         graph_data.layout['uirevision'] = true
                         Plotly.react('geo-graph', graph_data.data, graph_data.layout);
-                        //$('#geo-graph').html(data)
-                        // console.log(data)
                     });
                     counter = 15
                 }

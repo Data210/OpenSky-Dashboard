@@ -109,6 +109,10 @@ def get_tracks(icao24_list: list):
         df = pd.concat([df,df_temp])
     return df
 
+def plot_altitude(df):
+    fig = px.line(df, x='time', y='baro_altitude')
+    return fig
+
 def plot_states(df):
     rotation_angles = df.true_track.fillna(0)
     token = open(".mapbox_token").read() # you need your own token
@@ -190,6 +194,19 @@ def graph_data():
     data = get_updated_graph_data()
 
     # Return the graph data as JSON
+    return data
+
+@app.route('/track-data/<icao24>', methods=['POST'])
+def track_data(icao24):
+    # Retrieve or generate the updated graph data
+    df = get_tracks([icao24])
+    fig = plot_altitude(df)
+    div = fig.to_html(full_html=False,include_plotlyjs=False)
+    lineJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
+    return lineJSON
+    # Return the graph data as JSON
+
+
     return data
 
 @app.route('/flight-data/<icao24>', methods=['POST'])
