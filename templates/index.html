@@ -249,7 +249,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
 
         <!-- FLIGHTS TABLE -->
         <div
-            class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
+            class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
             <div id="flights-loadingtext"
                 class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
                 <div
@@ -300,10 +300,43 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
             </div>
         </div>
         <!-- TRACK GRAPHS -->
-        <div class="relative row-span-2 col-span-1 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
-            <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
+        <div class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+            <div id="bottom-graph-body" class="w-full h-full grid content-stretch" style="grid-template-rows: auto 1fr;">
+
+            
+                <div id="graph-tabs" class="border-b border-gray-200 dark:border-gray-700">
+                    <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                        <li class="w-full" role="presentation">
+                            <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Altitude</button>
+                        </li>
+                        <li class="w-full" role="presentation">
+                            <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Property 2</button>
+                        </li>
+                        <li class="w-full" role="presentation">
+                            <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Property 3</button>
+                        </li>
+                        <li class="w-full" role="presentation">
+                            <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Property 4</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="graph-tabs-content" class="w-full h-full flex place-items-stretch bg-transparent">
+                    <div class="hidden w-full p-6 rounded-lg bg-transparent" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
+                        </div>
+                    </div>
+                    <div class="hidden w-full rounded-lg bg-transparent" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                    </div>
+                    <div class="hidden w-full rounded-lg bg-transparent" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    </div>
+                    <div class="hidden w-full rounded-lg bg-transparent" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                    </div>
+                </div>
 
             </div>
+
+
             <div id="track-graph-loadingwheel"
                 class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
                 <div role="status">
@@ -335,6 +368,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
         $(document).ready(function () {
             $('#track-graph-loadingwheel').hide()
             $('#flights-table').hide()
+            $('#bottom-graph-body').hide()
             $.post('/graph-data', function (response) {
                 function timeConverter(UNIX_timestamp) {
                     if (UNIX_timestamp == null) return "Not available";
@@ -373,8 +407,8 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                     console.log(data.points['0'].fullData.marker.color)
                     $('#track-graph-loadingtext').hide()
                     $('#track-graph-loadingwheel').show()
-                    
-                    $('#tracks-graph-body').find('.plotly').hide()
+                    $('#bottom-graph-body').hide()
+
                     if (map.layout.mapbox.center) {
                         map.layout.mapbox.center.lon = data.points['0'].lon
                         map.layout.mapbox.center.lat = data.points['0'].lat
@@ -420,7 +454,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                         line_data.layout['uirevision'] = true
                         Plotly.react('tracks-graph-body', line_data.data, line_data.layout);
                         $('#track-graph-loadingwheel').hide()
-                        $('#tracks-graph-body').find('.plotly').show()
+                        $('#bottom-graph-body').show()
                     });
                 });
 
