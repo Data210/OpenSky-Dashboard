@@ -72,7 +72,7 @@ def get_current_states(number: int = 0):
 
 def get_flights(icao24: str):
     end_time = int(time.time())
-    begin_time = end_time - 3600 * 24
+    begin_time = end_time - 3600 * 24 * 3
     url = f"https://opensky-network.org/api/flights/aircraft?icao24={icao24}&begin={begin_time}&end={end_time}"
     payload = {}
     headers = {'Cookie': 'XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2'}

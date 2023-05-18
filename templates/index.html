@@ -219,9 +219,8 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
 
     <div class="grid grid-rows-4 grid-cols-3 h-full gap-6 p-6">
 
-
-        <div
-            class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
+        <!-- MAIN GRAPH -->
+        <div class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
             <!-- Embed the Plotly figure -->
             <div
                 class="absolute flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
@@ -248,12 +247,19 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
 
         </div>
 
-
+        <!-- FLIGHTS TABLE -->
         <div
-            class="row-span-2 col-span-1 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
-            <div class="row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg">
+            class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
+            <div id="flights-loadingtext"
+                class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
+                <div
+                    class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                    Select an aircraft to view details</div>
+            </div>
+            <div id="flights-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+            scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Departure Airport
@@ -274,7 +280,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                     </thead>
                     <tbody id="flights-table-body">
                         <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 Apple MacBook Pro 17"
@@ -293,11 +299,13 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                 </table>
             </div>
         </div>
+        <!-- TRACK GRAPHS -->
+        <div class="relative row-span-2 col-span-1 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
+            <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
 
-        <div id="tracks-graph-body"
-            class="row-span-2 col-span-1 block p-6 bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700">
+            </div>
             <div id="track-graph-loadingwheel"
-                class="flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
+                class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
                 <div role="status">
                     <svg aria-hidden="true"
                         class="w-full aspect-square text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -313,7 +321,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                 </div>
             </div>
             <div id="track-graph-loadingtext"
-                class="flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
+                class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
                 <div
                     class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
                     Select an aircraft to view details</div>
@@ -326,19 +334,20 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
     <script>
         $(document).ready(function () {
             $('#track-graph-loadingwheel').hide()
+            $('#flights-table').hide()
             $.post('/graph-data', function (response) {
                 function timeConverter(UNIX_timestamp) {
                     if (UNIX_timestamp == null) return "Not available";
-                    var a = new Date(UNIX_timestamp * 1000);
-                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                    var year = a.getFullYear();
-                    var month = months[a.getMonth()];
-                    var date = a.getDate();
-                    var hour = a.getHours();
-                    var min = a.getMinutes();
-                    var sec = a.getSeconds();
-                    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-                    return time;
+                    var date = new Date(UNIX_timestamp * 1000);
+                    // var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    // var year = date.getFullYear();
+                    // var month = months[date.getMonth()];
+                    // var date = date.getDate();
+                    // var hour = date.getHours();
+                    // var min = date.getMinutes();
+                    // var sec = date.getSeconds();
+                    // var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+                    return new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(date);
                 }
                 graph_data = JSON.parse(response)
                 // Update the graph with the received data
@@ -352,7 +361,6 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
 
 
                 map.on('plotly_relayout', function (eventdata) {
-                    console.log(eventdata)
                     zoom = eventdata['mapbox.zoom']
                 });
 
@@ -361,6 +369,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                     console.log(`Getting data for ${icao24}`)
                     $('#track-graph-loadingtext').hide()
                     $('#track-graph-loadingwheel').show()
+                    
                     $('#tracks-graph-body').find('.plotly').hide()
                     if (map.layout.mapbox.center) {
                         map.layout.mapbox.center.lon = data.points['0'].lon
@@ -373,25 +382,26 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                         flight_data = JSON.parse(response)
                         console.log(flight_data)
                         $('#flights-table-body').html("")
-                        for (const flight of flight_data) {
-                            console.log(flight)
+                        for (const flight of flight_data) { 
                             $('#flights-table-body').append(
-                                `<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                ${flight.estDepartureAirport ?? "None"}
+                                `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+                            <th scope="row" class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                                ${flight.estDepartureAirport ?? "Unconfirmed"}
                             </th>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-base">
                                 ${timeConverter(flight.firstSeen)}
                             </td>
-                            <td class="px-6 py-4">
-                                ${flight.estArrivalAirport ?? "None"}
+                            <td class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                                ${flight.estArrivalAirport ?? "Unconfirmed"}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-base">
                                 ${timeConverter(flight.lastSeen)}
                             </td>
                         </tr>`
                             )
                         }
+                        $('#flights-loadingtext').hide()
+                        $('#flights-table').show()
                         $('#flights-table-body').removeClass('animate-pulse')
                     });
                     $.post('/track-data/' + icao24, function (response) {
