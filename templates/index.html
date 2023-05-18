@@ -345,6 +345,7 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                 var config = { displayModeBar: false, responsive: true };
                 var map = document.getElementById('geo-graph');
                 var zoom = 0
+                var current_selected_icao24 = null
 
                 Plotly.setPlotConfig(config);
                 graph_data.layout['uirevision'] = true;
@@ -358,7 +359,10 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
 
                 map.on('plotly_click', function (data) {
                     let icao24 = data.points[0].customdata[0]
+                    current_selected_icao24 = icao24
                     console.log(`Getting data for ${icao24}`)
+                    console.log(Object.keys(data.points['0'].fullData.marker))
+                    console.log(data.points['0'].fullData.marker.color)
                     $('#track-graph-loadingtext').hide()
                     $('#track-graph-loadingwheel').show()
                     $('#tracks-graph-body').find('.plotly').hide()
@@ -367,6 +371,12 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                         map.layout.mapbox.center.lat = data.points['0'].lat
                     }
                     Plotly.redraw('geo-graph')
+                    $.post(`/plot-track-data/icao24=${icao24}`, function (response) {
+                        track_data = JSON.parse(response)
+                        console.log(track_data)
+                        track_data.layout['uirevision'] = true
+                        Plotly.react('geo-graph', track_data.data, track_data.layout)
+                    })
 
                     $('#flights-table-body').addClass('animate-pulse')
                     $.post('/flight-data/' + icao24, function (response) {
@@ -413,8 +423,17 @@ scrollbar scrollbar-thumb-zinc-950 scrollbar-track-zinc-700 h-10 overflow-y-scro
                         $.post('/graph-data', function (response) {
                             graph_data = JSON.parse(response)
                             // Update the graph with the received data
-                            graph_data.layout['uirevision'] = true
-                            Plotly.react('geo-graph', graph_data.data, graph_data.layout);
+                            if (current_selected_icao24 !== null){
+                                $.post(`/plot-track-data/icao24=${current_selected_icao24}`, function (response) {
+                                track_data = JSON.parse(response)
+                                console.log(track_data)
+                                track_data.layout['uirevision'] = true
+                                Plotly.react('geo-graph', track_data.data, track_data.layout)
+                            })
+                            }else{
+                                graph_data.layout['uirevision'] = true
+                                Plotly.react('geo-graph', graph_data.data, graph_data.layout);
+                            }
                         });
                         counter = 15
                     }
