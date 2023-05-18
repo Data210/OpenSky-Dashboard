@@ -133,9 +133,7 @@ def plot_altitude(df):
         b=0, #bottom margin
         t=30  #top margin
     ),
-    autosize=False,
-    width=520,
-    height=390,
+    autosize=True,
 )
 
     fig = go.Figure(
