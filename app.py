@@ -1,5 +1,5 @@
 import plotly.graph_objects as go
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import requests
 import json
 import pandas as pd
@@ -133,7 +133,6 @@ def plot_altitude(df):
         b=0, #bottom margin
         t=30  #top margin
     ),
-    autosize=False,
     width=520,
     height=390,
 )
@@ -145,11 +144,22 @@ def plot_altitude(df):
 
     return fig
 
-def plot_states(df):
+def get_states_scattermapbox(df):
     rotation_angles = df.true_track.fillna(0)
+    trace = go.Scattermapbox( mode = "markers", lon = df['longitude'], lat = df['latitude'], 
+                                   marker = {'size': 10, 'symbol': "airport",'angle':rotation_angles,'allowoverlap':True}, 
+                                   customdata=df[['icao24','callsign','origin_country','latitude','longitude','baro_altitude']],
+                                   hovertemplate='<br>'.join([ 'ICAO24: %{customdata[0]}', 'Callsign: %{customdata[1]}', 'Origin_Country: %{customdata[2]}', 'Latitude: %{customdata[3]}', 'Longitude: %{customdata[4]}', 'Altitude: %{customdata[5]}' ])
+                                   )
+    return trace
+
+
+def plot_states(df):
     token = open(".mapbox_token").read() # you need your own token
+    trace = get_states_scattermapbox(df)
+
     fig = go.Figure()
-    fig = go.Figure(go.Scattermapbox( mode = "markers", lon = df['longitude'], lat = df['latitude'], marker = {'size': 10, 'symbol': "airport",'angle':rotation_angles,'allowoverlap':True}, customdata=df[['icao24','callsign','origin_country','latitude','longitude','baro_altitude']], hovertemplate='<br>'.join([ 'ICAO24: %{customdata[0]}', 'Callsign: %{customdata[1]}', 'Origin_Country: %{customdata[2]}', 'Latitude: %{customdata[3]}', 'Longitude: %{customdata[4]}', 'Altitude: %{customdata[5]}' ]) ))
+    fig.add_trace(trace)
     fig.update_layout( mapbox = { 'accesstoken': token, 'style': "dark", 'zoom': 0}, showlegend = False)
     fig.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
@@ -168,6 +178,47 @@ def plot_states(df):
     #               projection="natural earth",
     #               )
     return fig
+
+@app.route('/plot-track-data/icao24=<icao24>', methods=['POST'])
+def plot_tracks_v2(icao24):
+    # icao24 = request.args['icao24']
+    token = open(".mapbox_token").read() # you need your own token
+
+    data = get_current_states_v2()
+    states_trace = get_states_scattermapbox(data)
+
+    # token = open(".mapbox_token").read() # you need your own token
+    fig = go.Figure()
+    df = get_tracks([icao24])
+    fig.add_trace(go.Scattermapbox(
+        mode = "lines",
+        lon = df['longitude'],
+        lat = df['latitude']
+        )
+    )
+    fig.add_trace(go.Scattermapbox(
+        mode = "markers",
+        lon = [df['longitude'].iloc[-1]],
+        lat = [df['latitude'].iloc[-1]],
+        marker = {'size':10}
+        )
+    )
+    fig.add_trace(states_trace)
+
+    fig.update_layout( mapbox = { 'accesstoken': token, 'style': "dark", 'zoom': 0}, showlegend = False)
+    fig.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+
+        #coastlinecolor = '#ffaaaa'
+    )
+    fig.update_geos(
+        oceancolor = '#ff0000'
+    )
+    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+    
 
 def plot_tracks(df):
     df_markers = df.query("time == endTime")
