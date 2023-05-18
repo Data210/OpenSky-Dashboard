@@ -193,14 +193,16 @@ def plot_tracks_v2(icao24):
     fig.add_trace(go.Scattermapbox(
         mode = "lines",
         lon = df['longitude'],
-        lat = df['latitude']
+        lat = df['latitude'],
+        hoverinfo='skip'
         )
     )
     fig.add_trace(go.Scattermapbox(
         mode = "markers",
         lon = [df['longitude'].iloc[-1]],
         lat = [df['latitude'].iloc[-1]],
-        marker = {'size':10}
+        marker = {'size':10},
+        hoverinfo='skip'
         )
     )
     fig.add_trace(states_trace)
