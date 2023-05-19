@@ -1,0 +1,284 @@
+
+{% extends "layout.html" %}
+{% block head %}
+  {{ super() }}
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-rows-4 grid-cols-3 h-full gap-6 p-6">
+
+    <!-- MAIN GRAPH -->
+    <div class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
+        <!-- Embed the Plotly figure -->
+        <div
+            class="absolute flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
+            <div role="status">
+                <svg aria-hidden="true"
+                    class="w-full aspect-square mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor" />
+                    <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill" />
+                </svg>
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="w-full h-full grid content-stretch justify-stretch" id="geo-graph">
+            <button data-state="true"
+                class="bg-center bg-no-repeat bg-[size:70%] absolute top-6 right-6 h-20 aspect-square z-10 bg-red-500 hover:bg-yellow-500 text-white font-bold rounded-full mx-auto block data-[state=true]:bg-green-500"
+                style="background-image: url(/static/img/refresh.svg)" id="update-button">
+            </button>
+        </div>
+
+    </div>
+
+    <!-- FLIGHTS TABLE -->
+    <div
+        class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+        <div id="flights-loadingtext"
+            class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
+            <div
+                class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                Select an aircraft to view details</div>
+        </div>
+        <div id="flights-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+        scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Departure Airport
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Departed At
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Arrival Airport
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Last Seen
+                        </th>
+                        <!-- <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">Edit</span>
+                    </th> -->
+                    </tr>
+                </thead>
+                <tbody id="flights-table-body">
+                    <tr
+                        class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+                        <th scope="row"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Apple MacBook Pro 17"
+                        </th>
+                        <td class="px-6 py-4">
+                            Silver
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            $2999
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- TRACK GRAPHS -->
+    <div class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+        <div id="bottom-graph-body" class="w-full h-full grid content-stretch" style="grid-template-rows: auto 1fr;">
+
+        
+            <div id="graph-tabs" class="border-b border-gray-200 dark:border-gray-700">
+                <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                    <li class="w-full" role="presentation">
+                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Altitude</button>
+                    </li>
+                    <li class="w-full" role="presentation">
+                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Property 2</button>
+                    </li>
+                    <li class="w-full" role="presentation">
+                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Property 3</button>
+                    </li>
+                    <li class="w-full" role="presentation">
+                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Property 4</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="graph-tabs-content" class="w-full h-full flex place-items-stretch bg-transparent">
+                <div class="hidden w-full p-6 rounded-lg bg-transparent" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
+                    </div>
+                </div>
+                <div class="hidden w-full rounded-lg bg-transparent" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                </div>
+                <div class="hidden w-full rounded-lg bg-transparent" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                </div>
+                <div class="hidden w-full rounded-lg bg-transparent" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="track-graph-loadingwheel"
+            class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
+            <div role="status">
+                <svg aria-hidden="true"
+                    class="w-full aspect-square text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor" />
+                    <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill" />
+                </svg>
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div id="track-graph-loadingtext"
+            class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
+            <div
+                class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                Select an aircraft to view details</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#track-graph-loadingwheel').hide()
+        $('#flights-table').hide()
+        $('#bottom-graph-body').hide()
+        $.post('/graph-data', function (response) {
+            function timeConverter(UNIX_timestamp) {
+                if (UNIX_timestamp == null) return "Not available";
+                var date = new Date(UNIX_timestamp * 1000);
+                // var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                // var year = date.getFullYear();
+                // var month = months[date.getMonth()];
+                // var date = date.getDate();
+                // var hour = date.getHours();
+                // var min = date.getMinutes();
+                // var sec = date.getSeconds();
+                // var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+                return new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(date);
+            }
+            graph_data = JSON.parse(response)
+            // Update the graph with the received data
+            var config = { displayModeBar: false, responsive: true };
+            var map = document.getElementById('geo-graph');
+            var zoom = 0
+            var current_selected_icao24 = null
+
+            Plotly.setPlotConfig(config);
+            graph_data.layout['uirevision'] = true;
+            Plotly.newPlot('geo-graph', graph_data.data, graph_data.layout);
+
+
+            map.on('plotly_relayout', function (eventdata) {
+                zoom = eventdata['mapbox.zoom']
+            });
+
+            map.on('plotly_click', function (data) {
+                let icao24 = data.points[0].customdata[0]
+                current_selected_icao24 = icao24
+                console.log(`Getting data for ${icao24}`)
+                console.log(Object.keys(data.points['0'].fullData.marker))
+                console.log(data.points['0'].fullData.marker.color)
+                $('#track-graph-loadingtext').hide()
+                $('#track-graph-loadingwheel').show()
+                $('#bottom-graph-body').hide()
+
+                if (map.layout.mapbox.center) {
+                    map.layout.mapbox.center.lon = data.points['0'].lon
+                    map.layout.mapbox.center.lat = data.points['0'].lat
+                }
+                Plotly.redraw('geo-graph')
+                $.post(`/plot-track-data/icao24=${icao24}`, function (response) {
+                    track_data = JSON.parse(response)
+                    console.log(track_data)
+                    track_data.layout['uirevision'] = true
+                    Plotly.react('geo-graph', track_data.data, track_data.layout)
+                })
+
+                $('#flights-table-body').addClass('animate-pulse')
+                $.post('/flight-data/' + icao24, function (response) {
+                    flight_data = JSON.parse(response)
+                    console.log(flight_data)
+                    $('#flights-table-body').html("")
+                    for (const flight of flight_data) { 
+                        $('#flights-table-body').append(
+                            `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+                        <th scope="row" class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                            ${flight.estDepartureAirport ?? "Unconfirmed"}
+                        </th>
+                        <td class="px-6 py-4 text-base">
+                            ${timeConverter(flight.firstSeen)}
+                        </td>
+                        <td class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                            ${flight.estArrivalAirport ?? "Unconfirmed"}
+                        </td>
+                        <td class="px-6 py-4 text-base">
+                            ${timeConverter(flight.lastSeen)}
+                        </td>
+                    </tr>`
+                        )
+                    }
+                    $('#flights-loadingtext').hide()
+                    $('#flights-table').show()
+                    $('#flights-table-body').removeClass('animate-pulse')
+                });
+                $.post('/track-data/' + icao24, function (response) {
+                    line_data = JSON.parse(response)
+                    // Update the graph with the received data
+                    line_data.layout['uirevision'] = true
+                    Plotly.react('tracks-graph-body', line_data.data, line_data.layout);
+                    $('#track-graph-loadingwheel').hide()
+                    $('#bottom-graph-body').show()
+                });
+            });
+
+            var autoUpdate = false;
+            var counter = 15
+            var interval = setInterval(function () {
+                if (!autoUpdate) return;
+                counter -= 1
+                if (counter <= 0) {
+                    $.post('/graph-data', function (response) {
+                        graph_data = JSON.parse(response)
+                        // Update the graph with the received data
+                        if (current_selected_icao24 !== null){
+                            $.post(`/plot-track-data/icao24=${current_selected_icao24}`, function (response) {
+                            track_data = JSON.parse(response)
+                            console.log(track_data)
+                            track_data.layout['uirevision'] = true
+                            Plotly.react('geo-graph', track_data.data, track_data.layout)
+                        })
+                        }else{
+                            graph_data.layout['uirevision'] = true
+                            Plotly.react('geo-graph', graph_data.data, graph_data.layout);
+                        }
+                    });
+                    counter = 15
+                }
+                $('#update-button').text(counter)
+            }, 1000);
+            // Button click event
+            $('#update-button').text(autoUpdate ? "On" : "Off")
+            $('#update-button').attr("data-state", autoUpdate)
+            $('#update-button').click(function () {
+                autoUpdate = !autoUpdate;
+                $('#update-button').text(autoUpdate ? "On" : "Off")
+                $('#update-button').attr("data-state", autoUpdate)
+            });
+        });
+    });
+</script>
+{% endblock %}

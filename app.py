@@ -276,6 +276,14 @@ def initalise_graph():
 def index():
     return render_template('index.html')
 
+@app.route('/live')
+def live():
+    return render_template('live.html')
+
+@app.route('/stats')
+def stats():
+    return render_template('stats.html')
+
 @app.route('/graph-data', methods=['POST'])
 def graph_data():
     # Retrieve or generate the updated graph data
