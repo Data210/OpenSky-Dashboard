@@ -72,7 +72,7 @@ def get_current_states(number: int = 0):
 
 def get_flights(icao24: str):
     end_time = int(time.time())
-    begin_time = end_time - 3600 * 24 * 3
+    begin_time = end_time - 3600 * 24 * 2
     url = f"https://opensky-network.org/api/flights/aircraft?icao24={icao24}&begin={begin_time}&end={end_time}"
     payload = {}
     headers = {'Cookie': 'XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2'}
@@ -82,7 +82,6 @@ def get_flights(icao24: str):
         return df
     
     decoded = json.loads(response.text)
-    print(decoded)
     df = pd.DataFrame(decoded, columns = ["icao24","firstSeen","estDepartureAirport",
                        "lastSeen","estArrivalAirport","callsign",
                        "estDepartureAirportHorizDistance","estDepartureAirportVertDistance","estArrivalAirportHorizDistance"
@@ -112,7 +111,6 @@ def get_tracks(icao24_list: list):
 def plot_altitude(df):
     # fig = px.line(df, x='time', y='baro_altitude')
     layout = go.Layout(
-    title="Altitude",
     titlefont={'color':"#FFFFFF"},
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',  # Sets background color to transparent
@@ -128,10 +126,10 @@ def plot_altitude(df):
         showgrid=False,  # Removes Y-axis grid lines    
     ),
      margin=go.layout.Margin(
-        l=0, #left margin
-        r=0, #right margin
-        b=0, #bottom margin
-        t=30  #top margin
+        l=20, #left margin
+        r=20, #right margin
+        b=20, #bottom margin
+        t=20  #top margin
     ),
     autosize=True,
 )

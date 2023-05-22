@@ -2,6 +2,7 @@
 __pycache__
 .vscode
 env
+env_production
 node_modules
 .env
 .mapbox_token

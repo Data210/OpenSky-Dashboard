@@ -50,16 +50,16 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-4 py-3">
                             Departure Airport
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-4 py-3">
                             Departed At
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-4 py-3">
                             Arrival Airport
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-4 py-3">
                             Last Seen
                         </th>
                         <!-- <th scope="col" class="px-6 py-3">
@@ -68,35 +68,17 @@
                     </tr>
                 </thead>
                 <tbody id="flights-table-body">
-                    <tr
-                        class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
-                        </th>
-                        <td class="px-6 py-4">
-                            Silver
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop
-                        </td>
-                        <td class="px-6 py-4">
-                            $2999
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <!-- TRACK GRAPHS -->
     <div class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
-        <div id="bottom-graph-body" class="w-full h-full grid content-stretch" style="grid-template-rows: auto 1fr;">
-
-        
-            <div id="graph-tabs" class="border-b border-gray-200 dark:border-gray-700">
+        <div id="bottom-graph-body" class="w-full h-full grid content-stretch" style="grid-template-rows: auto minmax(0,1fr); grid-template-columns: 100%;">
+            <div id="graph-tabs" class="w-full border-b border-gray-200 dark:border-gray-700">
                 <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="w-full" role="presentation">
-                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Altitude</button>
+                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="altitude-tab" data-tabs-target="#altitude" type="button" role="tab" aria-controls="altitude" aria-selected="false">Altitude</button>
                     </li>
                     <li class="w-full" role="presentation">
                         <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Property 2</button>
@@ -111,7 +93,7 @@
             </div>
 
             <div id="graph-tabs-content" class="w-full h-full flex place-items-stretch bg-transparent">
-                <div class="hidden w-full p-6 rounded-lg bg-transparent" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="hidden w-full rounded-lg bg-transparent" id="altitude" role="tabpanel" aria-labelledby="altitude-tab">
                     <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
                     </div>
                 </div>
@@ -124,8 +106,6 @@
             </div>
 
         </div>
-
-
         <div id="track-graph-loadingwheel"
             class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div role="status">
@@ -216,16 +196,16 @@
                     for (const flight of flight_data) { 
                         $('#flights-table-body').append(
                             `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
                             ${flight.estDepartureAirport ?? "Unconfirmed"}
                         </th>
-                        <td class="px-6 py-4 text-base">
+                        <td class="px-4 py-4 text-sm">
                             ${timeConverter(flight.firstSeen)}
                         </td>
-                        <td class="px-6 py-4 font-medium text-lg text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
                             ${flight.estArrivalAirport ?? "Unconfirmed"}
                         </td>
-                        <td class="px-6 py-4 text-base">
+                        <td class="px-4 py-4 text-sm">
                             ${timeConverter(flight.lastSeen)}
                         </td>
                     </tr>`
