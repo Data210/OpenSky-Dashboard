@@ -1,18 +1,17 @@
-
 {% extends "layout.html" %}
 {% block head %}
-  {{ super() }}
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{{ super() }}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <div class="grid grid-rows-4 grid-cols-3 h-full gap-6 p-6">
 
     <!-- MAIN GRAPH -->
-    <div class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
+    <div
+        class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
         <!-- Embed the Plotly figure -->
-        <div
-            class="absolute flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
+        <div class="absolute flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div role="status">
                 <svg aria-hidden="true"
                     class="w-full aspect-square mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -48,7 +47,8 @@
         <div id="flights-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
         scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
+                <thead
+                    class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
                     <tr>
                         <th scope="col" class="px-4 py-3">
                             Departure Airport
@@ -73,35 +73,54 @@
         </div>
     </div>
     <!-- TRACK GRAPHS -->
-    <div class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
-        <div id="bottom-graph-body" class="w-full h-full grid content-stretch" style="grid-template-rows: auto minmax(0,1fr); grid-template-columns: 100%;">
+    <div
+        class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+        <div id="bottom-graph-body" class="w-full h-full grid content-stretch"
+            style="grid-template-rows: auto minmax(0,1fr); grid-template-columns: 100%;">
             <div id="graph-tabs" class="w-full border-b border-gray-200 dark:border-gray-700">
-                <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400"
+                    id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="w-full" role="presentation">
-                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="altitude-tab" data-tabs-target="#altitude" type="button" role="tab" aria-controls="altitude" aria-selected="false">Altitude</button>
+                        <button
+                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
+                            id="altitude-tab" data-tabs-target="#altitude" type="button" role="tab"
+                            aria-controls="altitude" aria-selected="false">Altitude</button>
                     </li>
                     <li class="w-full" role="presentation">
-                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Property 2</button>
+                        <button
+                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
+                            id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                            aria-controls="dashboard" aria-selected="false">Property 2</button>
                     </li>
                     <li class="w-full" role="presentation">
-                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Property 3</button>
+                        <button
+                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
+                            id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
+                            aria-controls="settings" aria-selected="false">Property 3</button>
                     </li>
                     <li class="w-full" role="presentation">
-                        <button class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Property 4</button>
+                        <button
+                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
+                            id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab"
+                            aria-controls="contacts" aria-selected="false">Property 4</button>
                     </li>
                 </ul>
             </div>
 
             <div id="graph-tabs-content" class="w-full h-full flex place-items-stretch bg-transparent">
-                <div class="hidden w-full rounded-lg bg-transparent" id="altitude" role="tabpanel" aria-labelledby="altitude-tab">
-                    <div id="tracks-graph-body" class = "w-full h-full grid content-stretch justify-stretch">
+                <div class="hidden w-full rounded-lg bg-transparent" id="altitude" role="tabpanel"
+                    aria-labelledby="altitude-tab">
+                    <div id="tracks-graph-body" class="w-full h-full grid content-stretch justify-stretch">
                     </div>
                 </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="hidden w-full rounded-lg bg-transparent" id="dashboard" role="tabpanel"
+                    aria-labelledby="dashboard-tab">
                 </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="hidden w-full rounded-lg bg-transparent" id="settings" role="tabpanel"
+                    aria-labelledby="settings-tab">
                 </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                <div class="hidden w-full rounded-lg bg-transparent" id="contacts" role="tabpanel"
+                    aria-labelledby="contacts-tab">
                 </div>
             </div>
 
@@ -132,6 +151,45 @@
 </div>
 
 <script>
+    function plotAltitude(data) {
+        data.line = {color:'#ff675f',width:1}
+        data.mode = 'lines'
+        layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            xaxis: {
+                linecolor: "#FFFFFF",
+                color: "#FFFFFF",
+                showgrid: false,
+                showticklabels: false
+            },
+            yaxis: {
+                linecolor: "#FFFFFF",
+                color: "#FFFFFF",
+                showgrid: false,
+            },
+            margin: {
+                l: 20,
+                r: 20,
+                b: 20,
+                t: 20
+            },
+            autosize: true,
+            uirevision: true
+        }
+        Plotly.react('tracks-graph-body', [data], layout);
+    }
+    function plotTracks(data){
+        data.type="scattermapbox",
+        data.lat = [data.lat]
+        data.lon = [data.lon]
+        // data.line = {color:'#ff675f',width:1}
+        data.mode = "lines"
+        data.hoverinfo="skip"
+        console.log("Data: ",data)
+        Plotly.update("geo-graph",data,{},1)
+        console.log("In graph: ", document.getElementById("geo-graph").data)
+    }
     $(document).ready(function () {
         $('#track-graph-loadingwheel').hide()
         $('#flights-table').hide()
@@ -170,8 +228,8 @@
                 let icao24 = data.points[0].customdata[0]
                 current_selected_icao24 = icao24
                 console.log(`Getting data for ${icao24}`)
-                console.log(Object.keys(data.points['0'].fullData.marker))
-                console.log(data.points['0'].fullData.marker.color)
+                // console.log(Object.keys(data.points['0'].fullData.marker))
+                // console.log(data.points['0'].fullData.marker.color)
                 $('#track-graph-loadingtext').hide()
                 $('#track-graph-loadingwheel').show()
                 $('#bottom-graph-body').hide()
@@ -181,19 +239,23 @@
                     map.layout.mapbox.center.lat = data.points['0'].lat
                 }
                 Plotly.redraw('geo-graph')
-                $.post(`/plot-track-data/icao24=${icao24}`, function (response) {
-                    track_data = JSON.parse(response)
-                    console.log(track_data)
-                    track_data.layout['uirevision'] = true
-                    Plotly.react('geo-graph', track_data.data, track_data.layout)
-                })
+                // $.post(`/plot-track-data/icao24=${icao24}`, function (response) {
+                //     track_data = JSON.parse(response)
+                //     console.log(track_data)
+                //     track_data.layout['uirevision'] = true
+                //     Plotly.react('geo-graph', track_data.data, track_data.layout)
+                // })
 
                 $('#flights-table-body').addClass('animate-pulse')
-                $.post('/flight-data/' + icao24, function (response) {
-                    flight_data = JSON.parse(response)
-                    console.log(flight_data)
+                end_time = Math.floor(Date.now() / 1000)
+                begin_time = end_time - 3600 * 24 * 2
+                flight_get_url = `https://opensky-network.org/api/flights/aircraft?icao24=${icao24}&begin=${begin_time}&end=${end_time}`
+                $.get(flight_get_url, function (response) {
+                    // console.log(response)
+                    flight_data = response //JSON.parse(response)
+                    //console.log(flight_data)
                     $('#flights-table-body').html("")
-                    for (const flight of flight_data) { 
+                    for (const flight of flight_data) {
                         $('#flights-table-body').append(
                             `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
                         <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
@@ -215,11 +277,13 @@
                     $('#flights-table').show()
                     $('#flights-table-body').removeClass('animate-pulse')
                 });
-                $.post('/track-data/' + icao24, function (response) {
-                    line_data = JSON.parse(response)
-                    // Update the graph with the received data
-                    line_data.layout['uirevision'] = true
-                    Plotly.react('tracks-graph-body', line_data.data, line_data.layout);
+                $.get(`https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=0`, function (response) {
+                    const time = response.path.map(subArray => subArray[0]);
+                    const latitude = response.path.map(subArray => subArray[1]);
+                    const longitude = response.path.map(subArray => subArray[2]);
+                    const baro_altitude = response.path.map(subArray => subArray[3]);
+                    plotAltitude({ x: time, y: baro_altitude })
+                    plotTracks({lon:longitude, lat:latitude})
                     $('#track-graph-loadingwheel').hide()
                     $('#bottom-graph-body').show()
                 });
@@ -234,14 +298,14 @@
                     $.post('/graph-data', function (response) {
                         graph_data = JSON.parse(response)
                         // Update the graph with the received data
-                        if (current_selected_icao24 !== null){
+                        if (current_selected_icao24 !== null) {
                             $.post(`/plot-track-data/icao24=${current_selected_icao24}`, function (response) {
-                            track_data = JSON.parse(response)
-                            console.log(track_data)
-                            track_data.layout['uirevision'] = true
-                            Plotly.react('geo-graph', track_data.data, track_data.layout)
-                        })
-                        }else{
+                                track_data = JSON.parse(response)
+                                console.log(track_data)
+                                track_data.layout['uirevision'] = true
+                                Plotly.react('geo-graph', track_data.data, track_data.layout)
+                            })
+                        } else {
                             graph_data.layout['uirevision'] = true
                             Plotly.react('geo-graph', graph_data.data, graph_data.layout);
                         }
