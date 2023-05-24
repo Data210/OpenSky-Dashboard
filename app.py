@@ -21,6 +21,14 @@ icaos = ["ab1644", "aa9321", "a77ec5"]
 db = client.get_database("aircraft")
 collection = db.get_collection("states")
 
+state_columns = ["icao24", "callsign","origin_country",
+           "time_position","last_contact","longitude",
+           "latitude","baro_altitude","on_ground",
+           "velocity","true_track","vertical_rate",
+           "sensors","geo_altitude","squawk",
+           "spi","position_source"] 
+cached_states = None
+
 
 def get_current_states_v3(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
@@ -358,10 +366,9 @@ def stats():
 
 @app.route("/graph-data", methods=["POST"])
 def graph_data():
-    # Retrieve or generate the updated graph data
-    data = get_updated_graph_data()
 
-    # Return the graph data as JSON
+
+    data = get_updated_graph_data()
     return data
 
 
@@ -427,13 +434,25 @@ def plot_tracks_v2(icao24):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
+@app.route("/states", methods=["PUT"])
+def put_state():
+    data = request.json
+    update_state_cache(data)
+    return 'OK'
+
+def update_state_cache(data):
+    global cached_states
+    print(cached_states)
+    temp_data_df = pd.DataFrame(data,columns=state_columns)
+    cached_states = temp_data_df
+    if cached_states is not None:
+        print(cached_states.head())
 
 def get_updated_graph_data():
-    # Your logic to retrieve or generate updated graph data
+    global cached_states
     print("Getting data")
-    # fig = plot_tracks(get_tracks(get_current_states(20)))
-    # data = get_current_states_v2(1000)
-    data = get_current_states_v2()
+    # data = get_current_states_v2()
+    data = cached_states
     fig = plot_states(data)
     fig.add_trace(go.Scattermapbox(mode="lines", lon=[0], lat=[0], hoverinfo="skip"))
     fig.add_trace(
@@ -441,7 +460,6 @@ def get_updated_graph_data():
             mode="markers", lon=[0], lat=[0], marker={"size": 1}, hoverinfo="skip"
         )
     )
-    # div = fig.to_html(full_html=False,include_plotlyjs=False)
     print("Returning graph")
     return plotly.io.to_json(fig)
 
