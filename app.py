@@ -442,11 +442,8 @@ def put_state():
 
 def update_state_cache(data):
     global cached_states
-    print(cached_states)
     temp_data_df = pd.DataFrame(data,columns=state_columns)
     cached_states = temp_data_df
-    if cached_states is not None:
-        print(cached_states.head())
 
 def get_updated_graph_data():
     global cached_states
