@@ -8,11 +8,44 @@ scrollbar scrollbar-thumb-zinc-200 scrollbar-track-zinc-800/100 h-10 overflow-y-
     <title>OpenSky Visualisation</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="static/scripts/jscolor.js"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
     {% endblock %}
 </head>
 
+<script>
+    function linkPickerToProperty(picker,propertyName){
+        rgb = $(':root').css(`--${propertyName}`).split(" ")
+        picker.jscolor.channel('R',rgb[0])
+        picker.jscolor.channel('G',rgb[1])
+        picker.jscolor.channel('B',rgb[2])
+        picker.jscolor.onChange = function(){
+            $(':root').get(0).style.setProperty(`--${propertyName}`,
+            `${Math.floor(this.channel('R'))} ${Math.floor(this.channel('G'))} ${Math.floor(this.channel('B'))}`)
+        }
+    }
+    $(document).ready(function(){
+        document.addEventListener("keydown",function(e){
+            if(e.ctrlKey){
+                $('#color-picker-drawer').slideToggle(400)
+            }
+    })
+
+        console.log($(':root').css(`--primary-color`).split(" "))
+        linkPickerToProperty($('#primary-color-picker')[0],'primary-color')
+        linkPickerToProperty($('#secondary-color-picker')[0],'secondary-color')
+        linkPickerToProperty($('#background-primary-color-picker')[0],'background-primary')
+        linkPickerToProperty($('#background-secondary-color-picker')[0],'background-secondary')
+    })
+</script>
 <body class="h-full">
+    <div id="color-picker-drawer" class="hidden w-[255px] h-min p-4 fixed top-0 right-0 bg-black z-40 text-white">
+        Primary Color:<input id="primary-color-picker" value="var(--primary-color)" data-jscolor="{}"><br>
+        Secondary Color:<input id="secondary-color-picker" value="var(--primary-color)" data-jscolor="{}"><br>
+        Primary Background:<input id="background-primary-color-picker" value="var(--primary-color)" data-jscolor="{}"><br>
+        Secondary Background:<input id="background-secondary-color-picker" value="var(--primary-color)" data-jscolor="{}"><br>
+
+    </div>
     <!-- NAVBAR -->
     <nav class="bg-white dark:bg-transparent border-4 border-transparent ">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

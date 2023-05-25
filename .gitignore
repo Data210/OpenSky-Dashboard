@@ -8,3 +8,4 @@ node_modules
 .mapbox_token
 *.ipynb
 *.png
+dev_only

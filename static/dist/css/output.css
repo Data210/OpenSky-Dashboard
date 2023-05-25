@@ -1176,10 +1176,6 @@ input:checked + .toggle-bg {
   grid-column: span 3 / span 3;
 }
 
-.col-span-4 {
-  grid-column: span 4 / span 4;
-}
-
 .row-span-1 {
   grid-row: span 1 / span 1;
 }
@@ -1192,20 +1188,16 @@ input:checked + .toggle-bg {
   grid-row: 1 / -1;
 }
 
-.row-span-4 {
-  grid-row: span 4 / span 4;
-}
-
 .row-start-2 {
   grid-row-start: 2;
 }
 
-.row-start-\[4\] {
-  grid-row-start: 4;
-}
-
 .row-start-\[3\] {
   grid-row-start: 3;
+}
+
+.row-start-\[4\] {
+  grid-row-start: 4;
 }
 
 .mx-auto {
@@ -1295,12 +1287,12 @@ input:checked + .toggle-bg {
   aspect-ratio: 1/2;
 }
 
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
 .aspect-\[2\/1\] {
   aspect-ratio: 2/1;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
 }
 
 .h-10 {
@@ -1347,6 +1339,23 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
+.h-40 {
+  height: 10rem;
+}
+
+.h-\[400px\] {
+  height: 400px;
+}
+
+.h-min {
+  height: -moz-min-content;
+  height: min-content;
+}
+
 .min-h-0 {
   min-height: 0px;
 }
@@ -1386,6 +1395,26 @@ input:checked + .toggle-bg {
 
 .w-full {
   width: 100%;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.w-40 {
+  width: 10rem;
+}
+
+.w-\[200px\] {
+  width: 200px;
+}
+
+.w-\[300px\] {
+  width: 300px;
+}
+
+.w-\[255px\] {
+  width: 255px;
 }
 
 .max-w-screen-xl {
@@ -1514,10 +1543,6 @@ input:checked + .toggle-bg {
 
 .grid-rows-4 {
   grid-template-rows: repeat(4, minmax(0, 1fr));
-}
-
-.grid-rows-2 {
-  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -1783,6 +1808,11 @@ input:checked + .toggle-bg {
 .bg-zinc-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(250 250 250 / var(--tw-bg-opacity));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -2679,14 +2709,6 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 1024px) {
-  .lg\:grid-cols-8 {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-
-  .lg\:grid-rows-4 {
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:px-48 {
     padding-left: 12rem;
     padding-right: 12rem;
@@ -2712,8 +2734,4 @@ input:checked + .toggle-bg {
   .xl\:flex-row {
     flex-direction: row;
   }
-}
-
-.\[\&\>div\]\:aspect-square>div {
-  aspect-ratio: 1 / 1;
 }
