@@ -11,28 +11,35 @@
       class="text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
       Weekday analysis</h1>
   </div>
-  <div class="p-8 pt-4 w-full h-auto grid grid-rows-4 grid-cols-6 box-border gap-2 flex-1 min-h-0">
+  <div class="p-8 pt-4 w-full h-auto grid grid-rows-4 grid-cols-8 box-border gap-2 flex-1 min-h-0">
     <div class="card-transparent row-span-2 col-span-2">
-      <div id = "graph1" class ="w-full h-full"></div>
+      <div id="graph1" class="w-full h-full"></div>
+    </div>
+    <div class="card-transparent row-span-2 col-span-3">
+      <div id="graph2" class="w-full h-full"></div>
+    </div>
+    <div class="card-transparent row-span-2 col-span-3">
+      <div id="graph3" class="w-full h-full"></div>
+    </div>
+    <div class="card-transparent row-span-2 col-span-3">
+      <div id="graph4" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-2">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div class="w-full h-full"></div>
     </div>
-    <div class="card-transparent row-span-2 col-span-2">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
-    </div>
-    <div class="card-transparent row-span-2 col-span-2">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
-    </div>  
+    <!-- <div class="card-transparent row-span-2 col-span-2">
+      <div class="w-full h-full"></div>
+    </div> -->
     <div class="card-transparent row-span-2 col-span-1">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div id="graph5" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-2">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div id="graph6" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-1">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div class="w-full h-full"></div>
     </div>
+
   </div>
 </section>
 <section class="w-full h-screen flex flex-col">
@@ -52,4 +59,12 @@
 
   </div>
 </section>
+<script>
+  $(document).ready(function () {
+    bar_chart("graph2", {{ flights_by_country | safe}}, "Flights by Country")
+    bar_chart("graph3", {{ flights_by_operator | safe}}, "Flights by Operator")
+    bar_chart("graph4", {{ flights_arriving_airport | safe}}, "Arrivals by Airport")
+})
+
+</script>
 {% endblock %}
