@@ -1,3 +1,4 @@
+<!-- language=jinja -->
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
@@ -8,15 +9,32 @@
 <section class="w-full h-screen flex flex-col">
   <div class="w-full text-center my-4">
     <h1
-      class="text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
+      class="text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-cyan-50">
       Weekday analysis</h1>
   </div>
+
   <div class="p-8 pt-4 w-full h-auto grid grid-rows-4 grid-cols-8 box-border gap-2 flex-1 min-h-0">
+    <div class="card-transparent row-span-1 col-span-2">
+      <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
+        <div class="text-6xl font-extrabold dark:text-cyan-50">In the past 7 days</div>
+      </div>
+    </div>
+    <div class="card-transparent row-start-2 row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
+      <div class="text-7xl font-extrabold dark:text-cyan-50">12</div>
+      <div class="text-xl font-extrabold dark:text-cyan-50">Flights</div>
+    </div>
+    <div class="card-transparent row-start-2 row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
+      <div class="text-7xl font-extrabold dark:text-cyan-50">729</div>
+      <div class="text-xl font-extrabold dark:text-cyan-50">Flight-hours</div>
+    </div>
     <div class="card-transparent row-span-2 col-span-2">
       <div id="graph1" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-3">
       <div id="graph2" class="w-full h-full"></div>
+    </div>
+    <div class="card-transparent row-span-2 col-span-1">
+      <div class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-3">
       <div id="graph3" class="w-full h-full"></div>
@@ -30,9 +48,6 @@
     <!-- <div class="card-transparent row-span-2 col-span-2">
       <div class="w-full h-full"></div>
     </div> -->
-    <div class="card-transparent row-span-2 col-span-1">
-      <div id="graph5" class="w-full h-full"></div>
-    </div>
     <div class="card-transparent row-span-2 col-span-2">
       <div id="graph6" class="w-full h-full"></div>
     </div>
@@ -59,12 +74,13 @@
 
   </div>
 </section>
-<script>
+<!-- <script>
+  {{ flights_by_country | safe}}
   $(document).ready(function () {
     bar_chart("graph2", {{ flights_by_country | safe}}, "Flights by Country")
     bar_chart("graph3", {{ flights_by_operator | safe}}, "Flights by Operator")
     bar_chart("graph4", {{ flights_arriving_airport | safe}}, "Arrivals by Airport")
 })
 
-</script>
+</script> -->
 {% endblock %}

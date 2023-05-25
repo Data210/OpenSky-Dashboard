@@ -9,42 +9,59 @@ function line_chart(target_id, title) {
         type: 'scatter',
         mode: 'lines',
         fill: 'tozeroy',
-        fillcolor: "rgba(219, 187, 6,0.4)",
+        fillcolor: "rgba(150, 159, 237,0.2)",
         line: {
-            color: "rgba(219, 187, 6,0.5)",
+            color: "rgba(150, 159, 237,0.7)",
             width: 5,
             shape: 'spline',
-            smoothing: 1.3
+            smoothing: 1
         }
     };
 
     layout = {
         title: {
-            text: title,
+            text: '<b>'+title+'</b>',
             font: {
                 color: '#FFFFFF',
-                family: 'Helvetica'
-            }
+                family: 'Helvetica',
+                size: 40
+            },
+            yref: 'paper',
+            // automargin: true,
         },
         showlegend: false,
-        paper_bgcolor: 'rgba(0,0,0,0.2)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         xaxis: {
             linecolor: "#FFFFFF",
             color: "#FFFFFF",
+            tickfont:{
+                size:20
+            },
             showgrid: false,
-            showticklabels: true
+            ticklen: 15,
+            title_standoff:15,
+            showticklabels: true,
+            tickwidth: 0,
+            automargin: true,
         },
         yaxis: {
             linecolor: "#FFFFFF",
             color: "#FFFFFF",
-            showgrid: false,
+            gridcolor: "rgba(0,0,0,0.5)",
+            tickfont:{
+                size:20
+            },
+            showgrid: true,
+            automargin: true,
+            
         },
         margin: {
-            l: 30,
-            r: 15,
-            b: 30,
-            t: 40
+            // pad:20,
+            l: 10,
+            r: 10,
+            b: 10,
+            t: 80,
         },
         autosize: true,
         uirevision: true

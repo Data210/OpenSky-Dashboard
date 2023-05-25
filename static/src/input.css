@@ -2,8 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-    .card-transparent {
-      @apply block w-full h-full p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-blue-100 dark:bg-blue-800/30 dark:border-blue-900 dark:hover:bg-blue-800/70;
-    }
+@layer base {
+  :root {
+    --background-primary: 5 20 30;
+    --background-secondary: 8 3 18;
+    --primary-color: 16 31 41;
+    --secondary-color: 6 158 219;
   }
+}
+@layer components {
+  .card-transparent {
+    @apply block w-full h-full p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-primary dark:bg-primary/60 dark:border-primary dark:hover:bg-primary/30;
+  }
+}
+/* .root,
+#root,
+#docs-root {
+  --background-color: 5 20 30;
+  --primary-color: 8 3 18;
+  --secondary-color: 6 158 219;
+} */
