@@ -152,7 +152,7 @@
 
 <script>
     function plotAltitude(data) {
-        data.line = {color:'#ff675f',width:1}
+        data.line = { color: '#ff675f', width: 1 }
         data.mode = 'lines'
         layout = {
             paper_bgcolor: 'rgba(0,0,0,0)',
@@ -179,23 +179,23 @@
         }
         Plotly.react('tracks-graph-body', [data], layout);
     }
-    function plotTracks(data){
+    function plotTracks(data) {
         const data2 = {}
-        data.type="scattermapbox",
-        data2.lat = [[data.lat.at(-1)]]
+        data.type = "scattermapbox",
+            data2.lat = [[data.lat.at(-1)]]
         data2.lon = [[data.lon.at(-1)]]
         data.lat = [data.lat]
         data.lon = [data.lon]
         // data.line = {color:'#ff675f',width:1}
         data.mode = "lines"
-        data.hoverinfo="skip"
-        data2.type="scattermapbox",
-        data2.marker = {'size':10},
-        data2.mode = "markers"
-        data2.hoverinfo="skip"
+        data.hoverinfo = "skip"
+        data2.type = "scattermapbox",
+            data2.marker = { 'size': 10 },
+            data2.mode = "markers"
+        data2.hoverinfo = "skip"
         // console.log("Data: ",data)
-        Plotly.update("geo-graph",data,{},1)
-        Plotly.update("geo-graph",data2,{},2)
+        Plotly.update("geo-graph", data, {}, 1)
+        Plotly.update("geo-graph", data2, {}, 2)
         // console.log("In graph: ", document.getElementById("geo-graph").data)
     }
     $(document).ready(function () {
@@ -285,7 +285,7 @@
                     const longitude = response.path.map(subArray => subArray[2]);
                     const baro_altitude = response.path.map(subArray => subArray[3]);
                     plotAltitude({ x: time, y: baro_altitude })
-                    plotTracks({lon:longitude, lat:latitude})
+                    plotTracks({ lon: longitude, lat: latitude })
                     $('#track-graph-loadingwheel').hide()
                     $('#bottom-graph-body').show()
                 });
@@ -304,17 +304,17 @@
                         data.lon = [data.lon]
                         data.customdata = [data.customdata]
                         console.log(graph_data.data)
-                        Plotly.update('geo-graph', graph_data.data[0], {},0)
-                        console.log("In graph: ", document.getElementById("geo-graph").data)             
+                        Plotly.update('geo-graph', graph_data.data[0], {}, 0)
+                        console.log("In graph: ", document.getElementById("geo-graph").data)
                     });
                     if (current_selected_icao24 !== null) {
-                            $.get(`https://opensky-network.org/api/tracks/all?icao24=${current_selected_icao24}&time=0`, function (response) {
-                                // console.log("Got tracks")s
-                                const latitude = response.path.map(subArray => subArray[1]);
-                                const longitude = response.path.map(subArray => subArray[2]);
-                                plotTracks({lon:longitude, lat:latitude})
-                            });
-                        }
+                        $.get(`https://opensky-network.org/api/tracks/all?icao24=${current_selected_icao24}&time=0`, function (response) {
+                            // console.log("Got tracks")s
+                            const latitude = response.path.map(subArray => subArray[1]);
+                            const longitude = response.path.map(subArray => subArray[2]);
+                            plotTracks({ lon: longitude, lat: latitude })
+                        });
+                    }
                     counter = 15
                 }
                 $('#update-button').text(counter)
