@@ -2,6 +2,7 @@
 {% block head %}
 {{ super() }}
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="static/scripts/graphs.js"></script>
 {% endblock %}
 {% block content %}
 <section class="w-full h-screen flex flex-col">
@@ -10,30 +11,26 @@
       class="text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
       Weekday analysis</h1>
   </div>
-  <div class="p-8 pt-4 w-full h-auto grid box-border gap-2 flex-grow" style="grid-template-areas:
-        'a a b b c c'
-        'a a b b c c'
-        'd d e f f g'
-        'd d e f f g'">
-    <div style="grid-area: a" class="card-transparent">
+  <div class="p-8 pt-4 w-full h-auto grid grid-rows-4 grid-cols-6 box-border gap-2 flex-1 min-h-0">
+    <div class="card-transparent row-span-2 col-span-2">
+      <div id = "graph1" class ="w-full h-full"></div>
+    </div>
+    <div class="card-transparent row-span-2 col-span-2">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
     </div>
-    <div style="grid-area: b" class="card-transparent">
+    <div class="card-transparent row-span-2 col-span-2">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
     </div>
-    <div style="grid-area: c" class="card-transparent">
+    <div class="card-transparent row-span-2 col-span-2">
+      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+    </div>  
+    <div class="card-transparent row-span-2 col-span-1">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
     </div>
-    <div style="grid-area: d" class="card-transparent">
+    <div class="card-transparent row-span-2 col-span-2">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
     </div>
-    <div style="grid-area: e" class="card-transparent">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
-    </div>
-    <div style="grid-area: f" class="card-transparent">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
-    </div>
-    <div style="grid-area: g" class="card-transparent">
+    <div class="card-transparent row-span-2 col-span-1">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
     </div>
   </div>
