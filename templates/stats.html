@@ -16,13 +16,13 @@
         'd d e f f g'
         'd d e f f g'">
     <div style="grid-area: a" class="card-transparent">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div id="graph1" class="w-full h-full"></div>
     </div>
     <div style="grid-area: b" class="card-transparent">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div id="graph2" class="w-full h-full"></div>
     </div>
     <div style="grid-area: c" class="card-transparent">
-      <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
+      <div id="graph3" class="w-full h-full"></div>
     </div>
     <div style="grid-area: d" class="card-transparent">
       <p class="font-normal text-gray-700 dark:text-gray-400">Test</p>
@@ -55,4 +55,80 @@
 
   </div>
 </section>
+<script>
+  var data = {{flights_by_country | safe}}
+  var flights_by_country = [{
+    type: 'bar',
+    x: data.map(subArray => subArray[1]),
+    y: data.map(subArray => subArray[0]),
+    orientation: 'h',
+    marker:{
+      color:'#dbbb06'
+    }
+  }];
+  var data = {{flights_by_operator | safe}}
+  var flights_by_operator = [{
+    type: 'bar',
+    x: data.map(subArray => subArray[1]),
+    y: data.map(subArray => subArray[0]),
+    orientation: 'h',
+    marker:{
+      color:'#dbbb06'
+    }
+  }];
+  var data = {{flights_arriving_airport | safe}}
+  var flights_arriving_airport = [{
+    type: 'bar',
+    x: data.map(subArray => subArray[1]),
+    y: data.map(subArray => subArray[0]),
+    orientation: 'h',
+    marker:{
+      color:'#dbbb06'
+    }
+  }];
+
+  layout = {
+    xaxis:{
+        showline:true,
+        showgrid:false,
+        ticks:'outside',
+        linecolor:'rgb(255, 255, 255)',
+        linewidth:2,
+        zeroline:false,
+        tickcolor:'rgb(225, 225, 225)',
+        tickfont:{
+            family:'Arial',
+            size:12,
+            color:'rgb(255, 255, 255)',
+        },
+    },
+    yaxis:{
+        showline:true,
+        showgrid:true,
+        gridwidth:1,
+        gridcolor:'rgb(225, 225, 225)',
+        zeroline:false,
+        linecolor:'rgb(255, 255, 255)',
+        linewidth:2,
+        tickcolor:'rgb(225, 225, 225)',
+        ticks:'outside',
+        tickfont:{
+            family:'Arial',
+            size:12,
+            color:'rgb(255, 255, 255)',
+        }
+    },
+    paper_bgcolor:'rgba(0,0,0,0)',
+    plot_bgcolor:'rgba(0,0,0,0)',
+    autosize:true
+  }
+  config = {
+    displayModeBar: false
+  }
+
+
+  Plotly.newPlot('graph1', flights_by_country, layout, config);
+  Plotly.newPlot('graph2', flights_by_operator, layout, config);
+  Plotly.newPlot('graph3', flights_arriving_airport, layout, config);
+</script>
 {% endblock %}
