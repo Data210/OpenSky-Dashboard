@@ -1176,6 +1176,10 @@ input:checked + .toggle-bg {
   grid-column: span 3 / span 3;
 }
 
+.col-span-4 {
+  grid-column: span 4 / span 4;
+}
+
 .row-span-1 {
   grid-row: span 1 / span 1;
 }
@@ -1188,8 +1192,20 @@ input:checked + .toggle-bg {
   grid-row: 1 / -1;
 }
 
+.row-span-4 {
+  grid-row: span 4 / span 4;
+}
+
 .row-start-2 {
   grid-row-start: 2;
+}
+
+.row-start-\[4\] {
+  grid-row-start: 4;
+}
+
+.row-start-\[3\] {
+  grid-row-start: 3;
 }
 
 .mx-auto {
@@ -1281,6 +1297,10 @@ input:checked + .toggle-bg {
 
 .aspect-square {
   aspect-ratio: 1 / 1;
+}
+
+.aspect-\[2\/1\] {
+  aspect-ratio: 2/1;
 }
 
 .h-10 {
@@ -1472,6 +1492,10 @@ input:checked + .toggle-bg {
   resize: both;
 }
 
+.auto-rows-fr {
+  grid-auto-rows: minmax(0, 1fr);
+}
+
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1490,6 +1514,10 @@ input:checked + .toggle-bg {
 
 .grid-rows-4 {
   grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
+.grid-rows-2 {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -2371,11 +2399,6 @@ input:checked + .toggle-bg {
     border-color: rgb(63 63 70 / var(--tw-border-opacity));
   }
 
-  .dark\:bg-\[rgb\(14\2c 14\2c 14\)\] {
-    --tw-bg-opacity: 1;
-    background-color: rgb(14 14 14 / var(--tw-bg-opacity));
-  }
-
   .dark\:bg-blue-600 {
     --tw-bg-opacity: 1;
     background-color: rgb(28 100 242 / var(--tw-bg-opacity));
@@ -2456,6 +2479,11 @@ input:checked + .toggle-bg {
     color: rgb(63 131 248 / var(--tw-text-opacity));
   }
 
+  .dark\:text-cyan-50 {
+    --tw-text-opacity: 1;
+    color: rgb(236 254 255 / var(--tw-text-opacity));
+  }
+
   .dark\:text-gray-300 {
     --tw-text-opacity: 1;
     color: rgb(209 213 219 / var(--tw-text-opacity));
@@ -2484,21 +2512,6 @@ input:checked + .toggle-bg {
   .dark\:text-zinc-400 {
     --tw-text-opacity: 1;
     color: rgb(161 161 170 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-slate-50 {
-    --tw-text-opacity: 1;
-    color: rgb(248 250 252 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-cyan-100 {
-    --tw-text-opacity: 1;
-    color: rgb(207 250 254 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-cyan-50 {
-    --tw-text-opacity: 1;
-    color: rgb(236 254 255 / var(--tw-text-opacity));
   }
 
   .dark\:invert {
@@ -2666,6 +2679,14 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 1024px) {
+  .lg\:grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .lg\:grid-rows-4 {
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+  }
+
   .lg\:px-48 {
     padding-left: 12rem;
     padding-right: 12rem;
@@ -2691,4 +2712,8 @@ input:checked + .toggle-bg {
   .xl\:flex-row {
     flex-direction: row;
   }
+}
+
+.\[\&\>div\]\:aspect-square>div {
+  aspect-ratio: 1 / 1;
 }
