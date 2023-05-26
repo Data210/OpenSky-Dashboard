@@ -358,7 +358,7 @@ def index():
 def live():
     return render_template("live.html")
 
-def get_flights_data(view_name,limit = 0):
+def get_flights_data(view_name, limit = 0):
     with create_postgres_conn() as conn:
         sql = f"select * from {view_name};"
         df = pd.read_sql_query(sql, conn)
@@ -373,6 +373,7 @@ query_data["flights_by_country"] = get_flights_data('flights_by_country',10)
 query_data["flights_by_operator"] = get_flights_data('flights_by_operator',10)
 query_data["flights_arriving_airport"] = get_flights_data('total_flights_arriving_by_airport',10)
 query_data["flights_by_weekday"] = get_flights_data('total_flights_per_day',10)
+query_data["popular_flights_country"] = get_flights_data('most_popular_operator_by_country')
 
 @app.route("/stats")
 def stats():

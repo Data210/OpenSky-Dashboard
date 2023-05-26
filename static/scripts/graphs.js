@@ -138,3 +138,55 @@ function bar_chart(target_id, data, title) {
 
     Plotly.newPlot(target_id, data, layout, config);
 }
+
+function choropleth_map(target_id, data, title) {
+    console.log(data)
+    var colorScale = [
+        [0, 'rgb(240,240,240)'],  // No data color (light gray)
+        [0.1, 'rgb(220,220,220)'], // Lowest value color (dark gray)
+        [1.0, 'rgb(0,0,255)']      // Highest value color (blue)
+      ];
+
+    var data = [{
+        type: 'choropleth',
+        locations: data.map(subArray => subArray[2]),
+        z:data.map(subArray => subArray[3]),
+        locationmode:'ISO-3',
+        colorscale:colorScale,
+        zmax:300,
+        zmin:0,
+        autocolorscale: false,
+        // reversescale: true,
+        text:data.map(subArray => subArray[0]),
+        colorbar:{bordercolor:'#FFFFFF',orientation:'v',thickness:20,
+                tickfont:{family:'Arial',size:12, color:'#FFFFFF'},
+                title:{font:{color:'#FFFFFF',family:'Arial',size:12},side:'top',text:'Number Of Flights'},
+                x:0.83},
+    }];
+
+    layout = {
+        title: {
+            text: title,
+            font: {
+                color: '#FFFFFF',
+                family: 'Helvetica'
+            }
+        },
+        geo:{
+        showframe:false,
+        // showcoastlines:false,
+        bgcolor: 'rgba(0,0,0,0)',
+        showland:true,
+        landcolor:'#d3d3d3'
+        },
+        margin:{"r":0,"t":0,"l":0,"b":0},
+        paper_bgcolor:'rgba(0,0,0,0)',
+        plot_bgcolor:'rgba(0,0,0,0)',
+        
+    }
+    config = {
+        displayModeBar: false
+    }
+
+    Plotly.newPlot(target_id, data, layout, config);
+}
