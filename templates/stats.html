@@ -94,14 +94,14 @@
         </div>
       </div>
     </div>
-    <div class="card-transparent row-span-2 col-span-2">
+    <div class="card-transparent row-span-2 col-span-4">
       <div id="graph5" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-2">
       <div id="graph2" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-2">
-      <div id="graph5" class="w-full h-full"></div>
+      <div id="graph6" class="w-full h-full"></div>
     </div>
 
   </div>
@@ -110,10 +110,11 @@
   query_data = {{ query_data | safe }}
   console.log(query_data)
   $(document).ready(function () {
-    bar_chart("graph2", query_data.flights_by_country, "Flights by Country")
-    bar_chart("graph3", query_data.flights_by_operator, "Flights by Operator")
-    bar_chart("graph4", query_data.flights_arriving_airport, "Arrivals by Airport")
-    choropleth_map("graph5", query_data.popular_flights_country, "Most Popular Operator by Country")
+    line_chart("graph1", JSON.parse(query_data.flights_by_weekday), "Flights by weekday")
+    bar_chart("graph2", JSON.parse(query_data.flights_by_country), "Flights by Country")
+    bar_chart("graph3", JSON.parse(query_data.flights_by_operator), "Flights by Operator")
+    bar_chart("graph4", JSON.parse(query_data.flights_arriving_airport), "Arrivals by Airport")
+    choropleth_map("graph5", JSON.parse(query_data.popular_flights_country), "Most Popular Operator by Country")
 })
 
 </script>

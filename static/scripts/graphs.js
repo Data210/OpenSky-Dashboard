@@ -140,7 +140,7 @@ function bar_chart(target_id, data, title) {
 }
 
 function choropleth_map(target_id, data, title) {
-    console.log(data)
+    // console.log(data)
     var colorScale = [
         [0, 'rgb(240,240,240)'],  // No data color (light gray)
         [0.1, 'rgb(220,220,220)'], // Lowest value color (dark gray)
@@ -165,6 +165,10 @@ function choropleth_map(target_id, data, title) {
     }];
 
     layout = {
+        colorbar:{
+            orientation: "h",
+            xpad: 50
+        },
         title: {
             text: title,
             font: {
@@ -179,7 +183,7 @@ function choropleth_map(target_id, data, title) {
         showland:true,
         landcolor:'#d3d3d3'
         },
-        margin:{"r":0,"t":0,"l":0,"b":0},
+        // margin:{"r":5,"t":50,"l":5,"b":5},
         paper_bgcolor:'rgba(0,0,0,0)',
         plot_bgcolor:'rgba(0,0,0,0)',
         
