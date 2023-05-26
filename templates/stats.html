@@ -157,11 +157,10 @@
   console.log(query_data)
   $(document).ready(function () {
     line_chart("graph1", JSON.parse(query_data.flights_by_weekday), "Flights by weekday")
-    bar_chart("graph2", JSON.parse(query_data.flights_by_country), "Flights by Country")
     bar_chart("graph5", JSON.parse(query_data.flights_by_operator), "Flights by Operator")
     bar_chart("graph3", JSON.parse(query_data.flights_departing_airport), "Departures by Airport")
     bar_chart("graph4", JSON.parse(query_data.flights_arriving_airport), "Arrivals by Airport")
-    choropleth_map("graph5", JSON.parse(query_data.popular_flights_country), "Most Popular Operator by Country")
+    choropleth_map("graph5", JSON.parse(query_data.flights_by_country), "Flights by Country")
     generate_table("aircraft-flight-metrics-table-body",[],JSON.parse(query_data.aircraft_flight_metrics))
   })
 

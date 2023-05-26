@@ -149,15 +149,15 @@ function choropleth_map(target_id, data, title) {
 
     var data = [{
         type: 'choropleth',
-        locations: data.map(subArray => subArray[2]),
-        z: data.map(subArray => subArray[3]),
+        locations: data.map(subArray => subArray[0]),
+        z: data.map(subArray => subArray[1]),
         locationmode: 'ISO-3',
         colorscale: colorScale,
-        zmax: 300,
+        zmax: 900,
         zmin: 0,
         autocolorscale: false,
         // reversescale: true,
-        text: data.map(subArray => subArray[0]),
+        // text: data.map(subArray => subArray[0]),
         colorbar: {
             bordercolor: '#FFFFFF',
             orientation: 'v',
