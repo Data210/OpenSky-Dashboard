@@ -359,22 +359,24 @@ def index():
 def live():
     return render_template("live.html")
 
-def get_flights_data(view_name):
+def get_flights_data(view_name, limit = 0):
     with create_postgres_conn() as conn:
         sql = f"select * from {view_name};"
         df = pd.read_sql_query(sql, conn)
-        df = df.head(10)
+        if limit > 0:
+            df = df.head(limit)
         df = df.to_json(orient='values')
         print(df)
     return df
 
 @app.route("/stats")
 def stats():
-    flights_by_country = get_flights_data('flights_by_country')
-    flights_by_operator = get_flights_data('flights_by_operator')
-    flights_arriving_airport = get_flights_data('total_flights_arriving_by_airport')
+    flights_by_country = get_flights_data('flights_by_country',10)
+    flights_by_operator = get_flights_data('flights_by_operator',10)
+    flights_arriving_airport = get_flights_data('total_flights_arriving_by_airport',10)
+    popular_flights_country = get_flights_data('most_popular_operator_by_country')
     return render_template("stats.html", flights_by_country=flights_by_country, flights_by_operator=flights_by_operator,
-                           flights_arriving_airport=flights_arriving_airport)
+                           flights_arriving_airport=flights_arriving_airport,popular_flights_country=popular_flights_country)
 
 
 @app.route("/graph-data", methods=["POST"])

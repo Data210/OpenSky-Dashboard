@@ -51,7 +51,7 @@
       <div id="graph4" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-2 col-span-2">
-      <div class="w-full h-full"></div>
+      <div id="graph5" class="w-full h-full"></div>
     </div>
     <!-- <div class="card-transparent row-span-2 col-span-2">
       <div class="w-full h-full"></div>
@@ -82,13 +82,14 @@
 
   </div>
 </section>
-<!-- <script>
-  {{ flights_by_country | safe}}
+<script>
+  // {{ flights_by_country | safe}}
   $(document).ready(function () {
     bar_chart("graph2", {{ flights_by_country | safe}}, "Flights by Country")
     bar_chart("graph3", {{ flights_by_operator | safe}}, "Flights by Operator")
     bar_chart("graph4", {{ flights_arriving_airport | safe}}, "Arrivals by Airport")
-})
+    choropleth_map("graph5", {{ popular_flights_country | safe}}, "Most Popular Operator by Country")
+  })
 
-</script> -->
+</script>
 {% endblock %}
