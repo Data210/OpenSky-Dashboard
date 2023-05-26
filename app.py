@@ -395,7 +395,13 @@ query_data["flights_departing_airport"] = get_flights_data(
 )
 query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
 query_data["aircraft_flight_metrics"] = get_flights_data(
-    "total_flight_time_num_flights_distance_per_aircraft", 10
+    "total_flight_time_num_flights_distance_per_aircraft"
+)
+query_data["most_popular_operator_by_country"] = get_flights_data(
+    "most_popular_operator_by_country"
+)
+query_data["grouped_stats"] = get_flights_data(
+    "grouped_stats"
 )
 
 @app.route("/stats")
