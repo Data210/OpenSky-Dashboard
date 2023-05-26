@@ -22,12 +22,25 @@ icaos = ["ab1644", "aa9321", "a77ec5"]
 db = client.get_database("aircraft")
 collection = db.get_collection("states")
 
-state_columns = ["icao24", "callsign","origin_country",
-           "time_position","last_contact","longitude",
-           "latitude","baro_altitude","on_ground",
-           "velocity","true_track","vertical_rate",
-           "sensors","geo_altitude","squawk",
-           "spi","position_source"] 
+state_columns = [
+    "icao24",
+    "callsign",
+    "origin_country",
+    "time_position",
+    "last_contact",
+    "longitude",
+    "latitude",
+    "baro_altitude",
+    "on_ground",
+    "velocity",
+    "true_track",
+    "vertical_rate",
+    "sensors",
+    "geo_altitude",
+    "squawk",
+    "spi",
+    "position_source",
+]
 cached_states = None
 
 
@@ -253,7 +266,7 @@ def get_states_scattermapbox(df):
                 "latitude",
                 "longitude",
                 "baro_altitude",
-                "velocity"
+                "velocity",
             ]
         ],
         hovertemplate="<br>".join(
@@ -358,32 +371,45 @@ def index():
 def live():
     return render_template("live.html")
 
-def get_flights_data(view_name, limit = 0):
+
+def get_flights_data(view_name, limit=0):
     with create_postgres_conn() as conn:
-        sql = f"select * from {view_name};"
-        df = pd.read_sql_query(sql, conn)
         if limit > 0:
-            df = df.head(limit)
-        df = df.to_json(orient='values')
-        # print(df)
+            sql = f"select * from {view_name} limit {limit};"
+        else:
+            sql = f"select * from {view_name};"
+            
+        df = pd.read_sql_query(sql, conn)
+        df = df.to_json(orient="values")
     return df
 
+
 query_data = dict()
-query_data["flights_by_country"] = get_flights_data('flights_by_country',10)
-query_data["flights_by_operator"] = get_flights_data('flights_by_operator',10)
-query_data["flights_arriving_airport"] = get_flights_data('total_flights_arriving_by_airport',10)
-query_data["flights_by_weekday"] = get_flights_data('total_flights_per_day',10)
-query_data["popular_flights_country"] = get_flights_data('most_popular_operator_by_country')
+query_data["flights_by_country"] = get_flights_data("flights_by_country", 10)
+query_data["flights_by_operator"] = get_flights_data("flights_by_operator", 10)
+query_data["flights_arriving_airport"] = get_flights_data(
+    "total_flights_arriving_by_airport", 10
+)
+query_data["flights_departing_airport"] = get_flights_data(
+    "total_flights_departing_by_airport", 10
+)
+query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
+query_data["aircraft_flight_metrics"] = get_flights_data(
+    "total_flight_time_num_flights_distance_per_aircraft", 10
+)
+
+query_data["popular_flights_country"] = get_flights_data(
+    "most_popular_operator_by_country"
+)
+
 
 @app.route("/stats")
 def stats():
-    return render_template("stats.html", query_data = query_data)
+    return render_template("stats.html", query_data=query_data)
 
 
 @app.route("/graph-data", methods=["POST"])
 def graph_data():
-
-
     data = get_updated_graph_data()
     return data
 
@@ -450,16 +476,19 @@ def plot_tracks_v2(icao24):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
+
 @app.route("/states", methods=["PUT"])
 def put_state():
     data = request.json
     update_state_cache(data)
-    return 'OK'
+    return "OK"
+
 
 def update_state_cache(data):
     global cached_states
-    temp_data_df = pd.DataFrame(data,columns=state_columns)
+    temp_data_df = pd.DataFrame(data, columns=state_columns)
     cached_states = temp_data_df
+
 
 def get_updated_graph_data():
     global cached_states

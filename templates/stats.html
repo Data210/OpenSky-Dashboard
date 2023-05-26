@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
 <script src="static/scripts/graphs.js"></script>
 {% endblock %}
 {% block content %}
@@ -13,7 +13,8 @@
       Flight data analysis</h1>
   </div> -->
 
-  <div class="p-8 pt-4 w-full h-auto grid grid-cols-8 auto-rows-fr box-border gap-2 flex-1 min-h-0">
+  <div class="p-8 pt-4 w-full h-auto grid grid-cols-8 box-border gap-2 flex-1 min-h-0"
+  style="grid-auto-rows: minmax(auto,11vw);">
     <div class="card-invisible row-span-1 col-span-2 bg-transparent border-0 aspect-[2/1]">
       <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
         <div class="text-6xl font-extrabold dark:text-cyan-50">In the past 7 days</div>
@@ -41,24 +42,32 @@
       <div class="text-7xl font-extrabold dark:text-cyan-50">7.23m</div>
       <div class="text-xl font-extrabold dark:text-cyan-50">Total distance flown (km)</div>
     </div>
-    <div class="card-transparent p-0 row-span-2 col-span-2">
+    <div class="card-transparent relative p-0 row-span-2 col-span-2">
       <div id="flights-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
-        scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
+        scrollbar-thin scrollbar-thumb-white scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
+        <table class="w-full text-sm text-left text-gray-100 dark:text-gray-200">
+          <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
             <tr>
               <th scope="col" class="px-4 py-3">
                 ICAO24
               </th>
               <th scope="col" class="px-4 py-3">
-                Distance flown
+                Air time
               </th>
               <th scope="col" class="px-4 py-3">
-                Air time
+                Flights
+              </th>
+              <th scope="col" class="px-4 py-3">
+                Distance flown
               </th>
             </tr>
           </thead>
-          <tbody id="flights-table-body">
+          <tbody id="aircraft-flight-metrics-table-body">
+            <tr class="bg-background border-b dark:bg-background dark:border-secondary hover:bg-slate-50 dark:hover:bg-slate-600">
+              <td class="px-4 py-4 text-sm">
+                test
+            </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -69,8 +78,14 @@
       </div>
     </div>
     <div class="card-transparent row-span-1 col-span-1">
+      <div class="w-full h-full flex flex-col justify-center text-center">
+        <div class="text-3xl font-extrabold dark:text-cyan-50">Arrivals</div>
+      </div>
     </div>
     <div class="card-transparent row-start-4 row-span-1 col-span-1">
+      <div class="w-full h-full flex flex-col justify-center text-center">
+        <div class="text-3xl font-extrabold dark:text-cyan-50">Departures</div>
+      </div>
     </div>
     <div class="card-invisible row-span-1 col-span-3">
       <div id="graph3" class="w-full h-full"></div>
@@ -82,7 +97,7 @@
       <div id="week-flight-stats" class="w-full h-full flex flex-col items-center justify-center text-center">
         <div class="text-3xl font-extrabold dark:text-cyan-50">Most flown from:</div>
         <div class="grow">
-          <img class="w-full h-full" src="https://flagsapi.com/US/flat/64.png" style="image-rendering: pixelated;">
+          <img class="w-full h-full" src="https://flagsapi.com/IN/flat/64.png" style="image-rendering: pixelated;">
         </div>
       </div>
     </div>
@@ -94,17 +109,48 @@
         </div>
       </div>
     </div>
-    <div class="card-transparent row-span-2 col-span-4">
+    <div class="card-invisible p-0 row-span-2 col-span-4">
       <div id="graph5" class="w-full h-full"></div>
     </div>
-    <div class="card-transparent row-span-2 col-span-2">
-      <div id="graph2" class="w-full h-full"></div>
-    </div>
-    <div class="card-transparent row-span-2 col-span-2">
-      <div id="graph6" class="w-full h-full"></div>
-    </div>
+    <div class="card-transparent row-span-1 col-span-2">
+      <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
+        <div class="text-4xl font-extrabold dark:text-cyan-50">
+          < Busiest Airspaces</div>
+        </div>
+      </div>
+      <div class="card-transparent row-start-6 row-span-1 col-start-5 col-span-2">
+        <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
+          <div class="text-4xl font-extrabold dark:text-cyan-50"> Most popular operator by country > </div>
+        </div>
+      </div>
+      <div class="card-transparent row-span-2 col-span-2">
+        <div id="oprator-by-country-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+        scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-secondary dark:text-slate-400">
+              <tr>
+                <th scope="col" class="px-4 py-3">
+                  ICAO24
+                </th>
+                <th scope="col" class="px-4 py-3">
+                  Distance flown
+                </th>
+                <th scope="col" class="px-4 py-3">
+                  Air time
+                </th>
+              </tr>
+            </thead>
+            <tbody>
 
-  </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-transparent hidden row-span-2 col-span-2">
+        <div id="graph2" class="w-full h-full"></div>
+      </div>
+
+    </div>
 </section>
 <script>
   query_data = {{ query_data | safe }}
@@ -112,10 +158,12 @@
   $(document).ready(function () {
     line_chart("graph1", JSON.parse(query_data.flights_by_weekday), "Flights by weekday")
     bar_chart("graph2", JSON.parse(query_data.flights_by_country), "Flights by Country")
-    bar_chart("graph3", JSON.parse(query_data.flights_by_operator), "Flights by Operator")
+    bar_chart("graph5", JSON.parse(query_data.flights_by_operator), "Flights by Operator")
+    bar_chart("graph3", JSON.parse(query_data.flights_departing_airport), "Departures by Airport")
     bar_chart("graph4", JSON.parse(query_data.flights_arriving_airport), "Arrivals by Airport")
     choropleth_map("graph5", JSON.parse(query_data.popular_flights_country), "Most Popular Operator by Country")
-})
+    generate_table("aircraft-flight-metrics-table-body",[],JSON.parse(query_data.aircraft_flight_metrics))
+  })
 
 </script>
 {% endblock %}
