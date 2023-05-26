@@ -6,13 +6,16 @@
   :root {
     --background-primary: 5 20 30;
     --background-secondary: 8 3 18;
-    --primary-color: 16 31 41;
+    --primary-color: 52 72 87;
     --secondary-color: 6 158 219;
   }
 }
 @layer components {
   .card-transparent {
-    @apply block w-full h-full p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-primary dark:bg-primary/60 dark:border-primary dark:hover:bg-primary/30;
+    @apply block w-full h-full p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-primary dark:bg-primary/50 dark:border-primary dark:hover:bg-primary/30;
+  }
+  .card-invisible {
+    @apply block w-full h-full p-0 bg-transparent rounded-lg shadow;
   }
 }
 /* .root,

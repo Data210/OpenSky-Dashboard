@@ -133,7 +133,6 @@ def get_flights(icao24: str):
         or response.status_code == 404
         or response.status_code == 503
     ):
-        print(response.text)
         return df
 
     decoded = json.loads(response.text)
@@ -359,22 +358,25 @@ def index():
 def live():
     return render_template("live.html")
 
-def get_flights_data(view_name):
+def get_flights_data(view_name,limit = 0):
     with create_postgres_conn() as conn:
         sql = f"select * from {view_name};"
         df = pd.read_sql_query(sql, conn)
-        df = df.head(10)
+        if limit > 0:
+            df = df.head(limit)
         df = df.to_json(orient='values')
-        print(df)
+        # print(df)
     return df
+
+query_data = dict()
+query_data["flights_by_country"] = get_flights_data('flights_by_country',10)
+query_data["flights_by_operator"] = get_flights_data('flights_by_operator',10)
+query_data["flights_arriving_airport"] = get_flights_data('total_flights_arriving_by_airport',10)
+query_data["flights_by_weekday"] = get_flights_data('total_flights_per_day',10)
 
 @app.route("/stats")
 def stats():
-    flights_by_country = get_flights_data('flights_by_country')
-    flights_by_operator = get_flights_data('flights_by_operator')
-    flights_arriving_airport = get_flights_data('total_flights_arriving_by_airport')
-    return render_template("stats.html", flights_by_country=flights_by_country, flights_by_operator=flights_by_operator,
-                           flights_arriving_airport=flights_arriving_airport)
+    return render_template("stats.html", query_data = query_data)
 
 
 @app.route("/graph-data", methods=["POST"])
