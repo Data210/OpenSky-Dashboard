@@ -403,7 +403,7 @@ query_data["most_popular_operator_by_country"] = get_flights_data(
 query_data["grouped_stats"] = get_flights_data(
     "grouped_stats"
 )
-query_data["popular_routes"] = get_flights_data("popular_routes")
+query_data["popular_routes"] = get_flights_data("all_routes")
 
 @app.route("/stats")
 def stats():

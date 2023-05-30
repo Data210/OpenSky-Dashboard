@@ -213,25 +213,30 @@ function route_map(target_id, data, title){
     var dep = data.map(subArray => subArray[0])
     var arr = data.map(subArray => subArray[1])
 
+    var tmp_lons = [];
+    var tmp_lats = [];
+
     for ( var i = 0 ; i < count.length; i++ ) {
-        var opacityValue = count[i]/getMaxOfArray(count);
+        tmp_lons.push(startLongitude[i])
+        tmp_lons.push(endLongitude[i])
+        tmp_lons.push(null)
 
-        var result = {
-            type: 'scattergeo',
-            lon: [ startLongitude[i] , endLongitude[i] ],
-            lat: [ startLat[i] , endLat[i] ],
-            mode: 'lines',
-            line: {
-                width: 2.5,
-                color: 'rgb(150, 159, 237)'
-            },
-            opacity: opacityValue,
-            hoverinfo:'text',
-            text:`Departed: ${dep[i]}<br>Arrived: ${arr[i]}<br>No. Flights: ${count[i]}`
-        };
+        tmp_lats.push(startLat[i])
+        tmp_lats.push(endLat[i])
+        tmp_lats.push(null)
+    }
 
-        data_list.push(result);
-    };
+    var data_list = [{
+        type: 'scattergeo',
+        lon: tmp_lons,
+        lat: tmp_lats,
+        mode: 'lines',
+        line: {
+            width: 0.05,
+            color: 'rgb(150, 159, 237)'
+        },
+        opacity: 0.95
+    }];
 
     var layout = {
         showlegend: false,
@@ -254,7 +259,8 @@ function route_map(target_id, data, title){
         plot_bgcolor:'rgba(0,0,0,0)'
     };
     config = {
-        displayModeBar: false
+        displayModeBar: false,
+        staticPlot: true
     };
 
     Plotly.newPlot(target_id, data_list, layout,config,{showLink: false});
