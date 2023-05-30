@@ -180,6 +180,7 @@
     $('#most-flown-to-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_arriving_airport)[0][2]}/flat/64.png`);
     console.log(query_data.last_update)
     $('#last-updated-text').html(new Date(query_data.last_update*1000).toLocaleString("en-GB"));
+    route_map("graph6", JSON.parse(query_data.popular_routes), "")
   })
 
 </script>

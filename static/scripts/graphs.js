@@ -241,7 +241,68 @@ function choropleth_map(target_id, data, title) {
     Plotly.newPlot(target_id, data, layout, config);
 }
 
-function generate_table(element, columnNames, data, limit = 0) {
+function getMaxOfArray(numArray) {
+    return Math.max.apply(null, numArray);
+}
+
+function route_map(target_id, data, title){
+    var data_list = [];
+    var count = data.map(subArray => subArray[7])
+    var startLongitude = data.map(subArray => subArray[2])
+    var endLongitude = data.map(subArray => subArray[4])
+    var startLat = data.map(subArray => subArray[3])
+    var endLat = data.map(subArray => subArray[5])
+    var dep = data.map(subArray => subArray[0])
+    var arr = data.map(subArray => subArray[1])
+
+    for ( var i = 0 ; i < count.length; i++ ) {
+        var opacityValue = count[i]/getMaxOfArray(count);
+
+        var result = {
+            type: 'scattergeo',
+            lon: [ startLongitude[i] , endLongitude[i] ],
+            lat: [ startLat[i] , endLat[i] ],
+            mode: 'lines',
+            line: {
+                width: 2.5,
+                color: 'rgb(150, 159, 237)'
+            },
+            opacity: opacityValue,
+            hoverinfo:'text',
+            text:`Departed: ${dep[i]}<br>Arrived: ${arr[i]}<br>No. Flights: ${count[i]}`
+        };
+
+        data_list.push(result);
+    };
+
+    var layout = {
+        showlegend: false,
+        geo:{
+            projection: {
+                type: 'equirectangular'
+            },
+            showland:false,
+            showframe:false,
+            showcoastlines:true,
+            showlake:false,
+            showcountries:true,
+            bgcolor:'rgba(0,0,0,0)',
+            landcolor:'rgb(243, 243, 243)',
+            countrycolor:'rgb(128,128,128)',
+            coastlinecolor:'rgb(105,105,105)'
+        },
+        margin:{"r":0,"t":0,"l":0,"b":0},
+        paper_bgcolor:'rgba(0,0,0,0)',
+        plot_bgcolor:'rgba(0,0,0,0)'
+    };
+    config = {
+        displayModeBar: false
+    };
+
+    Plotly.newPlot(target_id, data_list, layout,config,{showLink: false});
+}
+
+function generate_table(element, columnNames, data, limit=0) {
     $(`#${element}`).html("")
     if (limit > 0){
         data = data.slice(0,limit)

@@ -501,6 +501,7 @@ def update_flights_cache(query_data):
     query_data["domestic_vs_international_flights"] = get_flights_data(
         "domestic_vs_international_flights"
     )
+    query_data["popular_routes"] = get_flights_data("popular_routes")
 
 def get_updated_graph_data():
     global cached_states
