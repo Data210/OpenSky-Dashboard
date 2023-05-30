@@ -149,6 +149,9 @@
       <div class="card-transparent hidden row-span-2 col-span-2">
         <div id="graph2" class="w-full h-full"></div>
       </div>
+      <div class="card-invisible p-0 row-span-2 col-span-4">
+        <div id="graph6" class="w-full h-full"></div>
+      </div>
 
     </div>
 </section>
@@ -162,6 +165,7 @@
     bar_chart("graph4", JSON.parse(query_data.flights_arriving_airport), "Arrivals by Airport")
     choropleth_map("graph5", JSON.parse(query_data.flights_by_country), "Flights by Country")
     generate_table("aircraft-flight-metrics-table-body",[],JSON.parse(query_data.aircraft_flight_metrics))
+    route_map("graph6", JSON.parse(query_data.popular_routes), "")
   })
 
 </script>

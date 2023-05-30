@@ -397,6 +397,7 @@ query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
 query_data["aircraft_flight_metrics"] = get_flights_data(
     "total_flight_time_num_flights_distance_per_aircraft", 10
 )
+query_data["popular_routes"] = get_flights_data("popular_routes")
 
 @app.route("/stats")
 def stats():
