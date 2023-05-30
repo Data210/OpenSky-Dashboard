@@ -22,28 +22,31 @@
     </div>
     <div
       class="card-transparent row-start-2 row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
-      <div class="text-7xl font-extrabold dark:text-cyan-50">12</div>
+      <div id="total-flights" class="text-6xl font-extrabold dark:text-cyan-50"></div>
       <div class="text-xl font-extrabold dark:text-cyan-50">Flights</div>
     </div>
     <div
       class="card-transparent row-start-2 row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
-      <div class="text-7xl font-extrabold dark:text-cyan-50">729</div>
+      <div id="total-flight-hours" class="text-6xl font-extrabold dark:text-cyan-50"></div>
       <div class="text-xl font-extrabold dark:text-cyan-50">Flight-hours</div>
     </div>
     <div class="card-invisible row-start-1 col-start-3 row-span-2 col-span-3">
       <div id="graph1" class="w-full h-full"></div>
     </div>
     <div class="card-transparent row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
-      <div class="text-7xl font-extrabold dark:text-cyan-50">1678</div>
+      <div id="unique-aircraft" class="text-6xl font-extrabold dark:text-cyan-50"></div>
       <div class="text-xl font-extrabold dark:text-cyan-50">Unique Aircraft</div>
     </div>
     <div
       class="card-transparent row-start-2 row-span-1 col-span-1 flex flex-col justify-evenly text-center items-center">
-      <div class="text-7xl font-extrabold dark:text-cyan-50">7.23m</div>
+      <div id="total-distance-flow" class="text-6xl font-extrabold dark:text-cyan-50"></div>
       <div class="text-xl font-extrabold dark:text-cyan-50">Total distance flown (km)</div>
     </div>
-    <div class="card-transparent relative p-0 row-span-2 col-span-2">
-      <div id="flights-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+    <div class="card-invisible flex flex-col p-0 row-span-2 col-span-2">
+      <div class="text-3xl font-extrabold dark:text-cyan-50 text-center mb-2">
+        Top 10 aircraft
+      </div>
+      <div id="flights-table" class=" overflow-y-auto grow row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
         scrollbar-thin scrollbar-thumb-white scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
         <table class="w-full text-sm text-left text-gray-100 dark:text-gray-200">
           <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
@@ -52,19 +55,19 @@
                 ICAO24
               </th>
               <th scope="col" class="px-4 py-3">
-                Air time
+                Air time (H)
               </th>
               <th scope="col" class="px-4 py-3">
                 Flights
               </th>
               <th scope="col" class="px-4 py-3">
-                Distance flown
+                Flown (km)
               </th>
             </tr>
           </thead>
           <tbody id="aircraft-flight-metrics-table-body">
             <tr class="bg-background border-b dark:bg-background dark:border-secondary hover:bg-slate-50 dark:hover:bg-slate-600">
-              <td class="px-4 py-4 text-sm">
+              <td class="hidden px-4 py-4 text-sm">
                 test
             </td>
             </tr>
@@ -123,24 +126,24 @@
           <div class="text-4xl font-extrabold dark:text-cyan-50"> Most popular operator by country > </div>
         </div>
       </div>
-      <div class="card-transparent row-span-2 col-span-2">
-        <div id="oprator-by-country-table" class=" overflow-y-auto h-full row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
-        scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-secondary dark:text-slate-400">
+      <div class="card-invisible flex flex-col p-0 row-span-2 col-span-2"">
+        <div class="text-3xl font-extrabold dark:text-cyan-50 text-center mb-2">
+          Most popular operator by country
+        </div>
+        <div class="overflow-y-auto grow row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+        scrollbar-thin scrollbar-thumb-white scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
+          <table class="w-full text-sm text-left text-gray-100 dark:text-gray-2100">
+            <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
               <tr>
                 <th scope="col" class="px-4 py-3">
-                  ICAO24
+                  Country
                 </th>
                 <th scope="col" class="px-4 py-3">
-                  Distance flown
-                </th>
-                <th scope="col" class="px-4 py-3">
-                  Air time
+                  Operator
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="operator-by-country-table-body" >
 
             </tbody>
           </table>
@@ -159,12 +162,18 @@
   query_data = {{ query_data | safe }}
   console.log(query_data)
   $(document).ready(function () {
+    let grouped_stats = JSON.parse(query_data.grouped_stats)
+    $('#unique-aircraft').html(grouped_stats[0][2])
+    $('#total-flight-hours').html(grouped_stats[0][1]);
+    $('#total-flights').html(grouped_stats[0][0]);
+    $('#total-distance-flow').html((grouped_stats[0][3]/1000000).toFixed(2) + 'M');
     line_chart("graph1", JSON.parse(query_data.flights_by_weekday), "Flights by weekday")
     bar_chart("graph5", JSON.parse(query_data.flights_by_operator), "Flights by Operator")
     bar_chart("graph3", JSON.parse(query_data.flights_departing_airport), "Departures by Airport")
     bar_chart("graph4", JSON.parse(query_data.flights_arriving_airport), "Arrivals by Airport")
     choropleth_map("graph5", JSON.parse(query_data.flights_by_country), "Flights by Country")
-    generate_table("aircraft-flight-metrics-table-body",[],JSON.parse(query_data.aircraft_flight_metrics))
+    generate_table("aircraft-flight-metrics-table-body",["icao34","air time","flights","flown"],JSON.parse(query_data.aircraft_flight_metrics),10)
+    generate_table("operator-by-country-table-body",["Country","Operator"],JSON.parse(query_data.most_popular_operator_by_country))
     route_map("graph6", JSON.parse(query_data.popular_routes), "")
   })
 

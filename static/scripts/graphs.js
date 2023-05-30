@@ -85,13 +85,13 @@ function bar_chart(target_id, data, title) {
     }];
 
     layout = {
-        title: {
-            text: title,
-            font: {
-                color: '#FFFFFF',
-                family: 'Helvetica'
-            }
-        },
+        // title: {
+        //     text: title,
+        //     font: {
+        //         color: '#FFFFFF',
+        //         family: 'Helvetica'
+        //     }
+        // },
         xaxis: {
             showline: true,
             showgrid: false,
@@ -123,10 +123,10 @@ function bar_chart(target_id, data, title) {
             }
         },
         margin: {
-            l: 200,
-            r: 15,
+            l: 220,
+            r: 10,
             b: 30,
-            t: 40
+            t: 10
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
@@ -260,11 +260,15 @@ function route_map(target_id, data, title){
     Plotly.newPlot(target_id, data_list, layout,config,{showLink: false});
 }
 
-function generate_table(element, columnNames, data) {
+function generate_table(element, columnNames, data, limit=0) {
     $(`#${element}`).html("")
+    if (limit > 0){
+        data = data.slice(0,limit)
+    }
     for (const row of data) {
+        sliced_row = row.slice(0,columnNames.length)
         row_html = '';
-        for (const cell of row) {
+        for (const cell of sliced_row) {
             row_html = row_html + `
                     <td class="px-4 py-4 text-sm">
                     ${cell ?? "N/A"}
