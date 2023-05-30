@@ -382,28 +382,6 @@ def get_flights_data(view_name, limit=0):
         df = df.to_json(orient="values")
     return df
 
-
-query_data = dict()
-query_data["flights_by_country"] = get_flights_data("flights_by_country")
-query_data["flights_by_operator"] = get_flights_data("flights_by_operator", 10)
-query_data["flights_arriving_airport"] = get_flights_data(
-    "total_flights_arriving_by_airport", 10
-)
-query_data["flights_departing_airport"] = get_flights_data(
-    "total_flights_departing_by_airport", 10
-)
-query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
-query_data["aircraft_flight_metrics"] = get_flights_data(
-    "total_flight_time_num_flights_distance_per_aircraft"
-)
-query_data["most_popular_operator_by_country"] = get_flights_data(
-    "most_popular_operator_by_country"
-)
-query_data["grouped_stats"] = get_flights_data(
-    "grouped_stats"
-)
-query_data["popular_routes"] = get_flights_data("popular_routes")
-
 @app.route("/stats")
 def stats():
     return render_template("stats.html", query_data=query_data)
