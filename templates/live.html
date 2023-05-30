@@ -233,62 +233,64 @@
             });
 
             map.on('plotly_click', function (data) {
-                let icao24 = data.points[0].customdata[0]
-                current_selected_icao24 = icao24
-                console.log(`Getting data for ${icao24}`)
-                // console.log(Object.keys(data.points['0'].fullData.marker))
-                // console.log(data.points['0'].fullData.marker.color)
-                $('#track-graph-loadingtext').hide()
-                $('#track-graph-loadingwheel').show()
-                $('#bottom-graph-body').hide()
+                if (data.points[0].fullData.name === 'trace 3') {
+                    let icao24 = data.points[0].customdata[0]
+                    current_selected_icao24 = icao24
+                    console.log(`Getting data for ${icao24}`)
+                    // console.log(Object.keys(data.points['0'].fullData.marker))
+                    // console.log(data.points['0'].fullData.marker.color)
+                    $('#track-graph-loadingtext').hide()
+                    $('#track-graph-loadingwheel').show()
+                    $('#bottom-graph-body').hide()
 
-                if (map.layout.mapbox.center) {
-                    map.layout.mapbox.center.lon = data.points['0'].lon
-                    map.layout.mapbox.center.lat = data.points['0'].lat
-                }
-                Plotly.redraw('geo-graph')
-
-                $('#flights-table-body').addClass('animate-pulse')
-                end_time = Math.floor(Date.now() / 1000)
-                begin_time = end_time - 3600 * 24 * 2
-                flight_get_url = `https://opensky-network.org/api/flights/aircraft?icao24=${icao24}&begin=${begin_time}&end=${end_time}`
-                $.get(flight_get_url, function (response) {
-                    // console.log(response)
-                    flight_data = response //JSON.parse(response)
-                    //console.log(flight_data)
-                    $('#flights-table-body').html("")
-                    for (const flight of flight_data) {
-                        $('#flights-table-body').append(
-                            `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
-                        <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
-                            ${flight.estDepartureAirport ?? "Unconfirmed"}
-                        </th>
-                        <td class="px-4 py-4 text-sm">
-                            ${timeConverter(flight.firstSeen)}
-                        </td>
-                        <td class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
-                            ${flight.estArrivalAirport ?? "Unconfirmed"}
-                        </td>
-                        <td class="px-4 py-4 text-sm">
-                            ${timeConverter(flight.lastSeen)}
-                        </td>
-                    </tr>`
-                        )
+                    if (map.layout.mapbox.center) {
+                        map.layout.mapbox.center.lon = data.points['0'].lon
+                        map.layout.mapbox.center.lat = data.points['0'].lat
                     }
-                    $('#flights-loadingtext').hide()
-                    $('#flights-table').show()
-                    $('#flights-table-body').removeClass('animate-pulse')
-                });
-                $.get(`https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=0`, function (response) {
-                    const time = response.path.map(subArray => subArray[0]);
-                    const latitude = response.path.map(subArray => subArray[1]);
-                    const longitude = response.path.map(subArray => subArray[2]);
-                    const baro_altitude = response.path.map(subArray => subArray[3]);
-                    plotAltitude({ x: time, y: baro_altitude })
-                    plotTracks({ lon: longitude, lat: latitude })
-                    $('#track-graph-loadingwheel').hide()
-                    $('#bottom-graph-body').show()
-                });
+                    Plotly.redraw('geo-graph')
+
+                    $('#flights-table-body').addClass('animate-pulse')
+                    end_time = Math.floor(Date.now() / 1000)
+                    begin_time = end_time - 3600 * 24 * 2
+                    flight_get_url = `https://opensky-network.org/api/flights/aircraft?icao24=${icao24}&begin=${begin_time}&end=${end_time}`
+                    $.get(flight_get_url, function (response) {
+                        // console.log(response)
+                        flight_data = response //JSON.parse(response)
+                        //console.log(flight_data)
+                        $('#flights-table-body').html("")
+                        for (const flight of flight_data) {
+                            $('#flights-table-body').append(
+                                `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+                            <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
+                                ${flight.estDepartureAirport ?? "Unconfirmed"}
+                            </th>
+                            <td class="px-4 py-4 text-sm">
+                                ${timeConverter(flight.firstSeen)}
+                            </td>
+                            <td class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
+                                ${flight.estArrivalAirport ?? "Unconfirmed"}
+                            </td>
+                            <td class="px-4 py-4 text-sm">
+                                ${timeConverter(flight.lastSeen)}
+                            </td>
+                        </tr>`
+                            )
+                        }
+                        $('#flights-loadingtext').hide()
+                        $('#flights-table').show()
+                        $('#flights-table-body').removeClass('animate-pulse')
+                    });
+                    $.get(`https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=0`, function (response) {
+                        const time = response.path.map(subArray => subArray[0]);
+                        const latitude = response.path.map(subArray => subArray[1]);
+                        const longitude = response.path.map(subArray => subArray[2]);
+                        const baro_altitude = response.path.map(subArray => subArray[3]);
+                        plotAltitude({ x: time, y: baro_altitude })
+                        plotTracks({ lon: longitude, lat: latitude })
+                        $('#track-graph-loadingwheel').hide()
+                        $('#bottom-graph-body').show()
+                    });
+                };
             });
 
             var autoUpdate = false;

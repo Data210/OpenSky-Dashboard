@@ -284,8 +284,8 @@ def get_states_scattermapbox(df):
     return trace
 
 def get_airport_trace():
-    df = get_flights_data('all_airports',type='df')
-    print(df.head())
+    global cached_airports
+    df = cached_airports
     trace = go.Scattermapbox(
         mode="markers",
         lon=df["longitude"],
@@ -547,9 +547,9 @@ def update_flights_cache(query_data):
     query_data["popular_routes"] = get_flights_data("all_routes")
 
 def get_updated_graph_data():
-    # global cached_states
+    global cached_states
     print("Getting data")
-    # cached_states = get_current_states_v3()
+    cached_states = get_current_states_v3()
     data = cached_states
     fig = plot_states(data)
     print("Returning graph")
@@ -557,6 +557,7 @@ def get_updated_graph_data():
 
 query_data = dict()
 update_flights_cache(query_data)
+cached_airports = get_flights_data('all_airports',type='df')
 
 if __name__ == "__main__":
     app.run(debug=True)
