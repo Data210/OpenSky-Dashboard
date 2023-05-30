@@ -42,13 +42,14 @@ state_columns = [
     "position_source",
 ]
 cached_states = None
+cached_airports = None
 
 def get_current_states_v3(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
     payload = {}
     headers = {"Cookie": "XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2"}
     response = requests.request(
-        "GET", url, headers=headers, data=payload, auth=(api_username, api_password)
+        "GET", url, headers=headers, data=payload
     )
     if (
         response.text == None
@@ -282,12 +283,51 @@ def get_states_scattermapbox(df):
     )
     return trace
 
+def get_airport_trace():
+    df = get_flights_data('all_airports',type='df')
+    print(df.head())
+    trace = go.Scattermapbox(
+        mode="markers",
+        lon=df["longitude"],
+        lat=df["latitude"],
+        marker={
+            "size": 4
+        },
+        customdata=df[
+            [
+                "airport",
+                "type",
+                "iso",
+                "latitude",
+                "longitude"
+            ]
+        ],
+        hovertemplate="<br>".join(
+            [
+                "Airport: %{customdata[0]}",
+                "Type: %{customdata[1]}",
+                "ISO: %{customdata[2]}",
+                "Latitude: %{customdata[3]}",
+                "Longitude: %{customdata[4]}"
+            ]
+        ),
+    )
+    return trace
+
 
 def plot_states(df):
     token = open(".mapbox_token").read()  # you need your own token
     trace = get_states_scattermapbox(df)
+    airports_trace = get_airport_trace()
 
     fig = go.Figure()
+    fig.add_trace(airports_trace)
+    fig.add_trace(go.Scattermapbox(mode="lines", lon=[0], lat=[0], hoverinfo="skip"))
+    fig.add_trace(
+        go.Scattermapbox(
+            mode="markers", lon=[0], lat=[0], marker={"size": 1}, hoverinfo="skip"
+        )
+    )
     fig.add_trace(trace)
     fig.update_layout(
         mapbox={"accesstoken": token, "style": "dark", "zoom": 0}, showlegend=False
@@ -371,7 +411,7 @@ def live():
     return render_template("live.html")
 
 
-def get_flights_data(view_name, limit=0):
+def get_flights_data(view_name, limit=0, type='json'):
     with create_postgres_conn() as conn:
         if limit > 0:
             sql = f"select * from {view_name} limit {limit};"
@@ -379,7 +419,8 @@ def get_flights_data(view_name, limit=0):
             sql = f"select * from {view_name};"
             
         df = pd.read_sql_query(sql, conn)
-        df = df.to_json(orient="values")
+        if type == 'json':
+            df = df.to_json(orient="values")
     return df
 
 @app.route("/stats")
@@ -506,17 +547,11 @@ def update_flights_cache(query_data):
     query_data["popular_routes"] = get_flights_data("all_routes")
 
 def get_updated_graph_data():
-    global cached_states
+    # global cached_states
     print("Getting data")
-    # data = get_current_states_v2()
+    # cached_states = get_current_states_v3()
     data = cached_states
     fig = plot_states(data)
-    fig.add_trace(go.Scattermapbox(mode="lines", lon=[0], lat=[0], hoverinfo="skip"))
-    fig.add_trace(
-        go.Scattermapbox(
-            mode="markers", lon=[0], lat=[0], marker={"size": 1}, hoverinfo="skip"
-        )
-    )
     print("Returning graph")
     return plotly.io.to_json(fig)
 
