@@ -3,4 +3,38 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
+<section class="w-full px-[10vh] h-min">
+
+    <div class="text-center text-white text-6xl my-12"> Built using</div>
+    <div class="w-full h-min flex flex-row flex-wrap items-center justify-around gap-y-8">
+        <img src="https://www.python.org/static/img/python-logo.png">
+        <img class="max-h-[100px] max-w-[400px] invert"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flask_logo.svg/1280px-Flask_logo.svg.png">
+        <img class="max-h-[100px] max-w-[400px] rounded-xl"
+            src="https://www.steadygo.digital/media/snmcksnc/tailwindcss.png">
+        <img class="max-h-[100px] max-w-[400px]" src="https://dash.plotly.com/assets/images/plotly_logo_dark.png">
+        <img class="max-h-[100px] max-w-[400px]"
+            src="https://user-images.githubusercontent.com/4342845/35187436-8f178230-fdd8-11e7-99b6-799ba82708e9.png">
+    </div>
+    <div class="text-center text-white text-6xl my-12">Backend</div>
+    <div class="w-full h-min flex flex-row flex-wrap items-center justify-around gap-y-8 my-8">
+        <img class="max-h-[200px] max-w-[400px]"
+            src="https://www.sophos.com/sites/default/files/2022-02/aws-logo-white-orange.png">
+        <img class="max-h-[200px] max-w-[400px]"
+            src="https://cdn.icon-icons.com/icons2/2415/PNG/512/postgresql_plain_wordmark_logo_icon_146390.png">
+        <img class="max-h-[200px] max-w-[400px]"
+            src="https://taswar.zeytinsoft.com/wp-content/uploads/2017/12/MSAzure-functions.png">
+        <img class="max-h-[200px] max-w-[500px] rounded-2xl"
+            src="https://opensky-network.org/images/opensky_logo_aircraftDatabase.png">
+
+    </div>
+    <a href="https://github.com/Data210/OpenSky-Dashboard">
+        <div class="mt-16 w-max flex justify-center w items-center bg-[rgb(27,31,35)] rounded-full mx-auto border-transparent border-4 hover:border-white">
+            <img class="inline-block max-h-[100px] rounded-full"
+                src="https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png">
+            <div class="inline-block text-3xl text-white w-max whitespace-nowrap mr-8"> OpenSky Visualisation Repo</div>
+        </div>
+    </a>
+
+</section>
 {% endblock %}
