@@ -43,7 +43,6 @@ state_columns = [
 ]
 cached_states = None
 
-
 def get_current_states_v3(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
     payload = {}
@@ -383,31 +382,13 @@ def get_flights_data(view_name, limit=0):
         df = df.to_json(orient="values")
     return df
 
-
-query_data = dict()
-query_data["flights_by_country"] = get_flights_data("flights_by_country")
-query_data["flights_by_operator"] = get_flights_data("flights_by_operator", 10)
-query_data["flights_arriving_airport"] = get_flights_data(
-    "total_flights_arriving_by_airport", 10
-)
-query_data["flights_departing_airport"] = get_flights_data(
-    "total_flights_departing_by_airport", 10
-)
-query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
-query_data["aircraft_flight_metrics"] = get_flights_data(
-    "total_flight_time_num_flights_distance_per_aircraft"
-)
-query_data["most_popular_operator_by_country"] = get_flights_data(
-    "most_popular_operator_by_country"
-)
-query_data["grouped_stats"] = get_flights_data(
-    "grouped_stats"
-)
-
 @app.route("/stats")
 def stats():
     return render_template("stats.html", query_data=query_data)
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/graph-data", methods=["POST"])
 def graph_data():
@@ -484,12 +465,42 @@ def put_state():
     update_state_cache(data)
     return "OK"
 
+@app.route("/flights", methods=["PUT"])
+def put_flights():
+    global last_flight_query
+    last_flight_query = time.time()
+    update_flights_cache(query_data)
+    return "OK"
+
 
 def update_state_cache(data):
     global cached_states
     temp_data_df = pd.DataFrame(data, columns=state_columns)
     cached_states = temp_data_df
 
+def update_flights_cache(query_data):
+    query_data["last_update"] = time.time()
+    query_data["flights_by_country"] = get_flights_data("flights_by_country")
+    query_data["flights_by_operator"] = get_flights_data("flights_by_operator", 10)
+    query_data["flights_arriving_airport"] = get_flights_data(
+        "total_flights_arriving_by_airport", 10
+    )
+    query_data["flights_departing_airport"] = get_flights_data(
+        "total_flights_departing_by_airport", 10
+    )
+    query_data["flights_by_weekday"] = get_flights_data("total_flights_per_day", 10)
+    query_data["aircraft_flight_metrics"] = get_flights_data(
+        "total_flight_time_num_flights_distance_per_aircraft"
+    )
+    query_data["most_popular_operator_by_country"] = get_flights_data(
+        "most_popular_operator_by_country"
+    )
+    query_data["grouped_stats"] = get_flights_data(
+        "grouped_stats"
+    )
+    query_data["domestic_vs_international_flights"] = get_flights_data(
+        "domestic_vs_international_flights"
+    )
 
 def get_updated_graph_data():
     global cached_states
@@ -506,6 +517,8 @@ def get_updated_graph_data():
     print("Returning graph")
     return plotly.io.to_json(fig)
 
+query_data = dict()
+update_flights_cache(query_data)
 
 if __name__ == "__main__":
     app.run(debug=True)

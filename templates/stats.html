@@ -16,8 +16,9 @@
   <div class="p-8 pt-4 w-full h-auto grid grid-cols-8 box-border gap-2 flex-1 min-h-0"
   style="grid-auto-rows: minmax(auto,11vw);">
     <div class="card-invisible row-span-1 col-span-2 bg-transparent border-0 aspect-[2/1]">
-      <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
+      <div id="week-flight-stats" class="w-full h-full flex flex-col text-center justify-evenly">
         <div class="text-6xl font-extrabold dark:text-cyan-50">In the past 7 days</div>
+        <div class="text-xl dark:text-cyan-50">Last updated: <span id="last-updated-text"></span></div>
       </div>
     </div>
     <div
@@ -80,12 +81,12 @@
         <div class="text-6xl font-extrabold dark:text-cyan-50">Most popular airports</div>
       </div>
     </div>
-    <div class="card-transparent row-span-1 col-span-1">
+    <div class="card-transparent row-start-4 row-span-1 col-span-1">
       <div class="w-full h-full flex flex-col justify-center text-center">
         <div class="text-3xl font-extrabold dark:text-cyan-50">Arrivals</div>
       </div>
     </div>
-    <div class="card-transparent row-start-4 row-span-1 col-span-1">
+    <div class="card-transparent row-span-1 col-span-1">
       <div class="w-full h-full flex flex-col justify-center text-center">
         <div class="text-3xl font-extrabold dark:text-cyan-50">Departures</div>
       </div>
@@ -100,7 +101,7 @@
       <div id="week-flight-stats" class="w-full h-full flex flex-col items-center justify-center text-center">
         <div class="text-3xl font-extrabold dark:text-cyan-50">Most flown from:</div>
         <div class="grow">
-          <img class="w-full h-full" src="https://flagsapi.com/IN/flat/64.png" style="image-rendering: pixelated;">
+          <img id="most-flown-from-flag" class="w-full h-full" src="" style="image-rendering: pixelated;">
         </div>
       </div>
     </div>
@@ -108,7 +109,7 @@
       <div id="week-flight-stats" class="w-full h-full flex flex-col items-center justify-center text-center">
         <div class="text-3xl font-extrabold dark:text-cyan-50">Most flown to:</div>
         <div class="grow">
-          <img class="w-full h-full" src="https://flagsapi.com/CO/flat/64.png" style="image-rendering: pixelated;">
+          <img id="most-flown-to-flag" class="w-full h-full" src="" style="image-rendering: pixelated;">
         </div>
       </div>
     </div>
@@ -149,10 +150,12 @@
           </table>
         </div>
       </div>
-      <div class="card-transparent hidden row-span-2 col-span-2">
+      <div class="card-transparent row-span-2 col-span-2">
         <div id="graph2" class="w-full h-full"></div>
       </div>
-
+      <div class="card-invisible row-span-2 col-span-2">
+        <img src="static/img/Airplane_silhouette.svg" class="invert">
+      </div>
     </div>
 </section>
 <script>
@@ -171,6 +174,12 @@
     choropleth_map("graph5", JSON.parse(query_data.flights_by_country), "Flights by Country")
     generate_table("aircraft-flight-metrics-table-body",["icao34","air time","flights","flown"],JSON.parse(query_data.aircraft_flight_metrics),10)
     generate_table("operator-by-country-table-body",["Country","Operator"],JSON.parse(query_data.most_popular_operator_by_country))
+    console.log(JSON.parse(query_data.domestic_vs_international_flights))
+    donut_chart("graph2",JSON.parse(query_data.domestic_vs_international_flights),"Domestic")
+    $('#most-flown-from-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_departing_airport)[0][2]}/flat/64.png`);
+    $('#most-flown-to-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_arriving_airport)[0][2]}/flat/64.png`);
+    console.log(query_data.last_update)
+    $('#last-updated-text').html(new Date(query_data.last_update*1000).toLocaleString("en-GB"));
   })
 
 </script>
