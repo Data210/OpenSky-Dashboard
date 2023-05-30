@@ -44,7 +44,7 @@
       <div class="text-xl font-extrabold dark:text-cyan-50">Total distance flown (km)</div>
     </div>
     <div class="card-invisible flex flex-col p-0 row-span-2 col-span-2">
-      <div class="text-3xl font-extrabold dark:text-cyan-50 text-center mb-2">
+      <div class="text-2xl font-extrabold dark:text-cyan-50 text-center mb-2">
         Top 10 aircraft
       </div>
       <div id="flights-table" class=" overflow-y-auto grow row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
@@ -119,16 +119,16 @@
     <div class="card-transparent row-span-1 col-span-2">
       <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
         <div class="text-4xl font-extrabold dark:text-cyan-50">
-          < Busiest Airspaces</div>
+          Busiest Airspaces</div>
         </div>
       </div>
       <div class="card-transparent row-start-6 row-span-1 col-start-5 col-span-2">
         <div id="week-flight-stats" class="w-full h-full flex flex-col justify-center text-center">
-          <div class="text-4xl font-extrabold dark:text-cyan-50"> Most popular operator by country > </div>
+          <div class="text-4xl font-extrabold dark:text-cyan-50"> Worlwide routes </div>
         </div>
       </div>
       <div class="card-invisible flex flex-col p-0 row-span-2 col-span-2"">
-        <div class="text-3xl font-extrabold dark:text-cyan-50 text-center mb-2">
+        <div class="text-2xl font-extrabold dark:text-cyan-50 text-center mb-2">
           Most popular operator by country
         </div>
         <div class="overflow-y-auto grow row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
@@ -153,8 +153,37 @@
       <div class="card-transparent row-span-2 col-span-2">
         <div id="graph2" class="w-full h-full"></div>
       </div>
-      <div class="card-invisible row-span-2 col-span-2">
+      <div class="card-invisible flex flex-col p-0 row-span-2 col-span-2"">
+        <div class="text-2xl font-extrabold dark:text-cyan-50 text-center mb-2">
+          Most popular international routes
+        </div>
+        <div class="overflow-y-auto grow row-start-2 row-span-full col-span-1 relative overflow-x-auto shadow-md sm:rounded-lg
+        scrollbar-thin scrollbar-thumb-white scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
+          <table class="w-full text-sm text-left text-gray-100 dark:text-gray-2100">
+            <thead class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
+              <tr>
+                <th scope="col" class="px-4 py-3">
+                  Origin
+                </th>
+                <th scope="col" class="px-4 py-3">
+                  Destination
+                </th>
+                <th scope="col" class="px-4 py-3">
+                  No. flights
+                </th>
+              </tr>
+            </thead>
+            <tbody id="most-popular-route-table-body" >
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <div class="card-invisible row-span-2 col-span-2">
         <img src="static/img/Airplane_silhouette.svg" class="invert">
+      </div> -->
+      <div class="card-invisible p-0 row-span-2 col-span-4">
+        <div id="graph6" class="w-full h-full"></div>
       </div>
     </div>
 </section>
@@ -174,6 +203,7 @@
     choropleth_map("graph5", JSON.parse(query_data.flights_by_country), "Flights by Country")
     generate_table("aircraft-flight-metrics-table-body",["icao34","air time","flights","flown"],JSON.parse(query_data.aircraft_flight_metrics),10)
     generate_table("operator-by-country-table-body",["Country","Operator"],JSON.parse(query_data.most_popular_operator_by_country))
+    generate_table("most-popular-route-table-body",["Origin","Destination","No. flights"],JSON.parse(query_data.most_popular_route_by_country))
     console.log(JSON.parse(query_data.domestic_vs_international_flights))
     donut_chart("graph2",JSON.parse(query_data.domestic_vs_international_flights),"Domestic")
     $('#most-flown-from-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_departing_airport)[0][2]}/flat/64.png`);

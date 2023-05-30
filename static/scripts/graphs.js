@@ -24,7 +24,7 @@ function interpolate(a,b,t){
 function line_chart(target_id, data, title) {
     x = data.map(subArray => subArray[0]);
     y = data.map(subArray => subArray[1]);
-    var trace1 = {
+    let trace1 = {
         x: data.map(subArray => subArray[0]),
         y: data.map(subArray => subArray[1]),
         type: 'scatter',
@@ -38,7 +38,7 @@ function line_chart(target_id, data, title) {
             // smoothing: 1
         }
     };
-    traces = []
+    let traces = []
     traces.push(trace1)
     n = 50
     for (let index = 0; index < n; index++) {
@@ -66,7 +66,7 @@ function line_chart(target_id, data, title) {
             font: {
                 color: '#FFFFFF',
                 family: 'Helvetica',
-                size: 40
+                size: 32
             },
             yref: 'paper',
             // automargin: true,
@@ -80,6 +80,7 @@ function line_chart(target_id, data, title) {
             tickfont: {
                 size: 20
             },
+            tickangle: 90,
             showgrid: false,
             ticklen: 15,
             title_standoff: 15,
@@ -214,6 +215,7 @@ function choropleth_map(target_id, data, title) {
         colorbar: {
             orientation: "h",
 
+
         },
         // title: {
         //     text: title,
@@ -296,7 +298,8 @@ function route_map(target_id, data, title){
         plot_bgcolor:'rgba(0,0,0,0)'
     };
     config = {
-        displayModeBar: false
+        displayModeBar: false,
+        staticPlot: true
     };
 
     Plotly.newPlot(target_id, data_list, layout,config,{showLink: false});
