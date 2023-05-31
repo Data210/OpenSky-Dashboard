@@ -48,7 +48,7 @@
         scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead
-                    class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
+                    class="text-s font-bold text-gray-700 uppercase bg-background2 dark:text-slate-400">
                     <tr>
                         <th scope="col" class="px-4 py-3">
                             Departure Airport
@@ -234,8 +234,6 @@ style="top:50%; left:50%; opacity: 0;">
 
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
-                console.log(map.data[0].marker.size)
-                console.log(zoom)
                 if (zoom < 2 || typeof zoom === 'undefined'){
                     map.data[0].marker.size = 2
                 }
@@ -249,7 +247,6 @@ style="top:50%; left:50%; opacity: 0;">
             });
             map.on('plotly_hover', function (data) {
                 showMasterTooltip(data)
-                console.log(data)
             });
             map.on('plotly_unhover', function (data) {
                 masterTooltip.style.opacity = 0;
@@ -282,7 +279,7 @@ style="top:50%; left:50%; opacity: 0;">
                         $('#flights-table-body').html("")
                         for (const flight of flight_data) {
                             $('#flights-table-body').append(
-                                `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+                                `<tr class="border-b bg-background dark:border-slate-700 hover:bg-slate-600">
                             <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
                                 ${flight.estDepartureAirport ?? "Unconfirmed"}
                             </th>
@@ -304,12 +301,10 @@ style="top:50%; left:50%; opacity: 0;">
                     });
                     $.get(`https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=0`, function (response) {
                         const time = response.path.map(subArray => subArray[0]);
-                        console.log(time)
                         const latitude = response.path.map(subArray => subArray[1]);
                         const longitude = response.path.map(subArray => subArray[2]);
                         const baro_altitude = response.path.map(subArray => subArray[3]);
                         const datetime = convert_timestamp_array(time)
-                        console.log(datetime)
                         plotAltitude({ x: datetime, y: baro_altitude })
                         plotTracks({ lon: longitude, lat: latitude })
                         $('#track-graph-loadingwheel').hide()
@@ -330,9 +325,7 @@ style="top:50%; left:50%; opacity: 0;">
                         data.lat = [data.lat]
                         data.lon = [data.lon]
                         data.customdata = [data.customdata]
-                        console.log(graph_data.data)
                         Plotly.update('geo-graph', graph_data.data[0], {}, 0)
-                        console.log("In graph: ", document.getElementById("geo-graph").data)
                     });
                     if (current_selected_icao24 !== null) {
                         $.get(`https://opensky-network.org/api/tracks/all?icao24=${current_selected_icao24}&time=0`, function (response) {
@@ -377,7 +370,6 @@ style="top:50%; left:50%; opacity: 0;">
         mouseY = e.clientY;
     })
     var masterTooltip = $('#masterTooltip').get()[0]
-    console.log(masterTooltip)
     function showMasterTooltip(data) {
         $('#masterTooltip img').css('transform',`rotate(${data.points[0]['marker.angle']}deg)`);
         $('#masterTooltip div div').get().forEach((element, i) => {
