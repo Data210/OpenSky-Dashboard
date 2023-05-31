@@ -87,6 +87,7 @@ function line_chart(target_id, data, title) {
             showticklabels: true,
             tickwidth: 0,
             automargin: true,
+            zeroline: false,
         },
         yaxis: {
             linecolor: "#FFFFFF",
@@ -97,6 +98,7 @@ function line_chart(target_id, data, title) {
             },
             showgrid: true,
             automargin: true,
+            zeroline: false
 
         },
         margin: {
