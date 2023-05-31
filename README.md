@@ -74,6 +74,9 @@ A full stack app for visualising bulk analytics and realtime reporting on open-s
 ![nginx][nginx]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## System Diagram
+<img src="static/img/system_diagram.png" alt="Logo" width="100%" style="border-radius:25px" >
+
 
 <!-- LICENSE -->
 ## License

@@ -1888,6 +1888,11 @@ input:checked + .toggle-bg {
   fill: #1C64F2;
 }
 
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .p-0 {
   padding: 0px;
 }
