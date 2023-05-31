@@ -8,10 +8,6 @@
 [![MIT License][license-shield]][license-url]
 
 
-[![Linkedin][linkedin-shield-andre]](https://www.linkedin.com/in/andre-m-r/)
-[![LinkedIn][linkedin-shield-ethan]](https://www.linkedin.com/in/ethan-jolly/)
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -91,9 +87,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Linkedin: [![Linkedin][linkedin-shield-andre]](https://www.linkedin.com/in/andre-m-r/)
+[![LinkedIn][linkedin-shield-ethan]](https://www.linkedin.com/in/ethan-jolly/)
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+
+Project Link: [OpenSky Visualisation](https://github.com/Data210/OpenSky-Dashboard)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
