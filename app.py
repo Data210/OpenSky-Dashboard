@@ -8,7 +8,7 @@ import plotly.express as px
 import pymongo
 import time
 import os
-from connection_string import create_postgres_conn
+from utils.connection_string import create_postgres_conn
 
 MONGODB_URI = "mongodb+srv://admin:iloveplanes@ethan-cluster.cr8xduf.mongodb.net/"
 client = pymongo.MongoClient(MONGODB_URI)

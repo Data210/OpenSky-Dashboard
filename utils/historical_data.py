@@ -2,7 +2,7 @@ import io
 import pandas as pd
 import requests
 from psycopg2.extras import execute_values
-from connection_string import create_postgres_conn
+from utils.connection_string import create_postgres_conn
 from datetime import datetime
 
 

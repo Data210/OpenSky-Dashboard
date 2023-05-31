@@ -63,8 +63,9 @@ A full stack app for visualising bulk analytics and realtime reporting on open-s
 
 
 ### Built With
-
+![Python][Python]
 [![Flask][Flask]][Flask-url]
+![Javascript][Javascript]
 ![jQuery][jQuery]
 [![Tailwind][Tailwind]][tailwind-url]
 [![AzureFunctions][AzureFunctions]][azure-url]
@@ -123,6 +124,8 @@ Project Link: [OpenSky Visualisation](https://github.com/Data210/OpenSky-Dashboa
 [linkedin-shield-ethan]: https://img.shields.io/badge/-Ethan_Jolly-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: static/img/screenshot.PNG
+[Python]:https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+[Javascript]: https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E
 [Flask]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
 [flask-url]: https://flask.palletsprojects.com/
 [Tailwind]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
