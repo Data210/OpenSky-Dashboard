@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="grid grid-rows-4 grid-cols-3 h-full gap-6 p-6">
+<div class="grid grid-rows-2 grid-cols-3 h-full gap-6 p-6">
 
     <!-- MAIN GRAPH -->
     <div
-        class="relative row-span-full col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
+        class="relative row-span-2 col-span-2 block bg-white border border-zinc-200 rounded-[12px] shadow dark:bg-zinc-900/50 dark:border-zinc-700  overflow-hidden">
         <!-- Embed the Plotly figure -->
         <div class="absolute flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div role="status">
@@ -37,7 +37,7 @@
 
     <!-- FLIGHTS TABLE -->
     <div
-        class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+        class="relative block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
         <div id="flights-loadingtext"
             class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div
@@ -48,7 +48,7 @@
         scrollbar scrollbar-thumb-zinc-900 scrollbar-track-zinc-950/30 scrollbar-rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead
-                    class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-slate-950 dark:text-slate-400">
+                    class="text-s font-bold text-gray-700 uppercase bg-slate-50 dark:bg-background2 dark:text-slate-400">
                     <tr>
                         <th scope="col" class="px-4 py-3">
                             Departure Airport
@@ -62,9 +62,6 @@
                         <th scope="col" class="px-4 py-3">
                             Last Seen
                         </th>
-                        <!-- <th scope="col" class="px-6 py-3">
-                        <span class="sr-only">Edit</span>
-                    </th> -->
                     </tr>
                 </thead>
                 <tbody id="flights-table-body">
@@ -74,58 +71,13 @@
     </div>
     <!-- TRACK GRAPHS -->
     <div
-        class="relative row-span-2 col-span-1 block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
-        <div id="bottom-graph-body" class="w-full h-full grid content-stretch"
-            style="grid-template-rows: auto minmax(0,1fr); grid-template-columns: 100%;">
-            <div id="graph-tabs" class="w-full border-b border-gray-200 dark:border-gray-700">
-                <ul class="hidden text-lgs font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400"
-                    id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-                    <li class="w-full" role="presentation">
-                        <button
-                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
-                            id="altitude-tab" data-tabs-target="#altitude" type="button" role="tab"
-                            aria-controls="altitude" aria-selected="false">Altitude</button>
-                    </li>
-                    <li class="w-full" role="presentation">
-                        <button
-                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
-                            id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
-                            aria-controls="dashboard" aria-selected="false">Property 2</button>
-                    </li>
-                    <li class="w-full" role="presentation">
-                        <button
-                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
-                            id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
-                            aria-controls="settings" aria-selected="false">Property 3</button>
-                    </li>
-                    <li class="w-full" role="presentation">
-                        <button
-                            class="inline-block w-full p-4 bg-white hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-slate-950 dark:hover:bg-zinc-800"
-                            id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab"
-                            aria-controls="contacts" aria-selected="false">Property 4</button>
-                    </li>
-                </ul>
-            </div>
+        class="relative block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
+        <div class="w-full h-full">
+            <div id="tracks-graph-body" class="w-full h-full hidden">
 
-            <div id="graph-tabs-content" class="w-full h-full flex place-items-stretch bg-transparent">
-                <div class="hidden w-full rounded-lg bg-transparent" id="altitude" role="tabpanel"
-                    aria-labelledby="altitude-tab">
-                    <div id="tracks-graph-body" class="w-full h-full grid content-stretch justify-stretch">
-                    </div>
-                </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="dashboard" role="tabpanel"
-                    aria-labelledby="dashboard-tab">
-                </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="settings" role="tabpanel"
-                    aria-labelledby="settings-tab">
-                </div>
-                <div class="hidden w-full rounded-lg bg-transparent" id="contacts" role="tabpanel"
-                    aria-labelledby="contacts-tab">
-                </div>
             </div>
-
         </div>
-        <div id="track-graph-loadingwheel"
+        <!-- <div id="track-graph-loadingwheel"
             class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div role="status">
                 <svg aria-hidden="true"
@@ -140,45 +92,82 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-        </div>
-        <div id="track-graph-loadingtext"
-            class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
-            <div
-                class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
-                Select an aircraft to view details</div>
-        </div>
+            <div id="track-graph-loadingtext"
+                class="absolute top-0 left-0 w-full h-full flex items-center justify-center  rounded-lg bg-gray-50 dark:bg-gray-800/0">
+                <div
+                    class="px-3 py-1 text-l font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                    Select an aircraft to view details</div>
+            </div>
+        </div> -->
+
     </div>
 </div>
+<div id="masterTooltip" class=" pointer-events-none fixed w-[400px] h-[300px] bg-background/80 rounded-lg border-primary border-1"
+style="top:50%; left:50%; opacity: 0;">
+    <div class ="h-full w-full grid grid-cols-2 grid-rows-6 text-white text-lg p-4 justify-items-center items-center">
+        <div class="col-span-2 text-xl font-bold">ICAO: <span></span></div>
+        <div>Callsign: <span></span></div>
+        <div>Country: <span></span></div>
+        <div>Longitude: <span></span>°</div>
+        <div>Latitude: <span></span>°</div>
+        <div>Altitude: <span></span>m</div>
+        <div>Velocity: <span></span>m/s</div>
+        <img src="static/img/plane_icon.png" class="float-right invert row-start-3 row-end-7 col-start-2">
 
+    </div>
+
+</div>
+<script src="static/scripts/graphs.js"></script>
 <script>
     function plotAltitude(data) {
-        data.line = { color: '#ff675f', width: 1 }
+        data.line = {
+            color: "rgba(150, 159, 240, 237)",
+            width: 3,
+            shape: 'spline',
+            // smoothing: 1
+        }
         data.mode = 'lines'
         layout = {
+            width: '100%',
+            height: '100%',
+            title: {
+                text: '<b>' + "Altitude" + '</b>',
+                font: {
+                    color: '#FFFFFF',
+                    family: 'Helvetica',
+                    size: 24
+                },
+                yref: 'container',
+
+                // automargin: true,
+            },
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)',
             xaxis: {
                 linecolor: "#FFFFFF",
                 color: "#FFFFFF",
                 showgrid: false,
-                showticklabels: false
+                // showticklabels: true,
+                // automargin: true,
             },
             yaxis: {
-                linecolor: "#FFFFFF",
-                color: "#FFFFFF",
-                showgrid: false,
+                linecolor: "rgba(255,255,255,0.3)",
+                color: "rgba(255,255,255,0.5)",
+                showgrid: true,
+                automargin: true,
             },
-            margin: {
-                l: 20,
-                r: 20,
-                b: 20,
-                t: 20
-            },
+            // margin: {
+            //     l: 10,
+            //     r: 10,
+            //     b: 10,
+            //     t: 60,
+            // },
             autosize: true,
             uirevision: true
         }
-        Plotly.react('tracks-graph-body', [data], layout);
+        Plotly.react('tracks-graph-body', [data], layout, { responsive: true });
     }
+    Plotly.newPlot('tracks-graph-body', [], { autosize: true, uirevision: true }, { responsive: true })
     function plotTracks(data) {
         const data2 = {}
         data.type = "scattermapbox",
@@ -199,21 +188,14 @@
         // console.log("In graph: ", document.getElementById("geo-graph").data)
     }
     $(document).ready(function () {
+        // Plotly.redraw('tracks-graph-body')
         $('#track-graph-loadingwheel').hide()
         $('#flights-table').hide()
-        $('#bottom-graph-body').hide()
+        // $('#tracks-graph-body').hide()
         $.post('/graph-data', function (response) {
             function timeConverter(UNIX_timestamp) {
                 if (UNIX_timestamp == null) return "Not available";
                 var date = new Date(UNIX_timestamp * 1000);
-                // var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                // var year = date.getFullYear();
-                // var month = months[date.getMonth()];
-                // var date = date.getDate();
-                // var hour = date.getHours();
-                // var min = date.getMinutes();
-                // var sec = date.getSeconds();
-                // var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
                 return new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(date);
             }
             graph_data = JSON.parse(response)
@@ -227,11 +209,16 @@
             graph_data.layout['uirevision'] = true;
             Plotly.newPlot('geo-graph', graph_data.data, graph_data.layout);
 
-
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
             });
-
+            map.on('plotly_hover', function (data) {
+                showMasterTooltip(data)
+                console.log(data)
+            });
+            map.on('plotly_unhover', function (data) {
+                masterTooltip.style.opacity = 0;
+            });
             map.on('plotly_click', function (data) {
                 let icao24 = data.points[0].customdata[0]
                 current_selected_icao24 = icao24
@@ -240,7 +227,7 @@
                 // console.log(data.points['0'].fullData.marker.color)
                 $('#track-graph-loadingtext').hide()
                 $('#track-graph-loadingwheel').show()
-                $('#bottom-graph-body').hide()
+                $('#tracks-graph-body').hide()
 
                 if (map.layout.mapbox.center) {
                     map.layout.mapbox.center.lon = data.points['0'].lon
@@ -253,26 +240,24 @@
                 begin_time = end_time - 3600 * 24 * 2
                 flight_get_url = `https://opensky-network.org/api/flights/aircraft?icao24=${icao24}&begin=${begin_time}&end=${end_time}`
                 $.get(flight_get_url, function (response) {
-                    // console.log(response)
-                    flight_data = response //JSON.parse(response)
-                    //console.log(flight_data)
+                    flight_data = response
                     $('#flights-table-body').html("")
                     for (const flight of flight_data) {
                         $('#flights-table-body').append(
-                            `<tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
-                        <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
-                            ${flight.estDepartureAirport ?? "Unconfirmed"}
-                        </th>
-                        <td class="px-4 py-4 text-sm">
-                            ${timeConverter(flight.firstSeen)}
-                        </td>
-                        <td class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
-                            ${flight.estArrivalAirport ?? "Unconfirmed"}
-                        </td>
-                        <td class="px-4 py-4 text-sm">
-                            ${timeConverter(flight.lastSeen)}
-                        </td>
-                    </tr>`
+                            `<tr class="bg-background border-b dark:bg-background dark:border-secondary hover:bg-slate-50 dark:hover:bg-slate-600">
+                                <th scope="row" class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${flight.estDepartureAirport ?? "Unconfirmed"}
+                                </th>
+                                <td class="px-4 py-4 text-sm">
+                                    ${timeConverter(flight.firstSeen)}
+                                </td>
+                                <td class="px-4 py-4 font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
+                                    ${flight.estArrivalAirport ?? "Unconfirmed"}
+                                </td>
+                                <td class="px-4 py-4 text-sm">
+                                    ${timeConverter(flight.lastSeen)}
+                                </td>
+                            </tr>`
                         )
                     }
                     $('#flights-loadingtext').hide()
@@ -284,10 +269,10 @@
                     const latitude = response.path.map(subArray => subArray[1]);
                     const longitude = response.path.map(subArray => subArray[2]);
                     const baro_altitude = response.path.map(subArray => subArray[3]);
+                    line_chart("tracks-graph-body", response.path, "Test")
                     plotAltitude({ x: time, y: baro_altitude })
-                    plotTracks({ lon: longitude, lat: latitude })
                     $('#track-graph-loadingwheel').hide()
-                    $('#bottom-graph-body').show()
+                    $('#tracks-graph-body').show()
                 });
             });
 
@@ -328,6 +313,70 @@
                 $('#update-button').attr("data-state", autoUpdate)
             });
         });
+        window.dispatchEvent(new Event('resize'));
     });
+</script>
+<script>
+    var mouseX = 0;
+    var mouseY = 0;
+    document.addEventListener("mousemove", function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    })
+    var masterTooltip = $('#masterTooltip').get()[0]
+    console.log(masterTooltip)
+    function showMasterTooltip(data) {
+        $('#masterTooltip img').css('transform',`rotate(${data.points[0]['marker.angle']}deg)`);
+        $('#masterTooltip div div').get().forEach((element, i) => {
+            // console.log($(element).find('span')[0])
+            $(element).find('span').html(data.points[0].customdata[i])
+        });
+
+        let rect = { right: mouseX, left: mouseX, top: mouseY, bottom: mouseY }
+        let horizontal;
+        let vertical;
+        //console.log("1) Tooltip height: ", masterTooltip.offsetHeight)
+        if (rect.right + 20 + masterTooltip.offsetWidth < window.innerWidth) {
+            horizontal = true;
+        } else {
+            horizontal = false;
+        }
+        if (rect.bottom + 20 + masterTooltip.offsetHeight > window.innerHeight) {
+            vertical = true;
+        } else {
+            vertical = false;
+        }
+        if (horizontal) {
+            masterTooltip.style.left = (rect.right + 20) + 'px';
+            masterTooltip.style.top = rect.top + 'px';
+        } else {
+            masterTooltip.style.left = (window.innerWidth - masterTooltip.offsetWidth - 20) + 'px';
+            masterTooltip.style.top = (rect.bottom + 20) + 'px';
+        }
+        if (vertical) {
+            masterTooltip.style.top = '';
+            masterTooltip.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+        } else {
+            masterTooltip.style.bottom = '';
+        }
+
+
+        // if (rect.right + 20 + masterTooltip.offsetWidth < window.innerWidth) {
+        //     masterTooltip.style.left = (rect.right + 20) + 'px';
+        //     masterTooltip.style.top = rect.top + 'px';
+        // } else {
+        //     masterTooltip.style.left = (window.innerWidth - masterTooltip.offsetWidth - 20) + 'px';
+        //     masterTooltip.style.top = (rect.bottom + 20) + 'px';
+        // }
+        //console.log("2) Rect bottom: ", rect.bottom + 20, "Tooltip height: ", masterTooltip.offsetHeight)
+        //console.log("Screen height: ", window.innerHeight)
+        // if (rect.bottom + 20 + masterTooltip.offsetHeight > window.innerHeight) {
+        //     masterTooltip.style.top = '';
+        //     masterTooltip.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+        // } else {
+        //     masterTooltip.style.bottom = '';
+        // }
+        masterTooltip.style.opacity = 1;
+    }
 </script>
 {% endblock %}

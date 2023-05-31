@@ -206,8 +206,8 @@
     generate_table("most-popular-route-table-body",["Origin","Destination","No. flights"],JSON.parse(query_data.most_popular_route_by_country))
     console.log(JSON.parse(query_data.domestic_vs_international_flights))
     donut_chart("graph2",JSON.parse(query_data.domestic_vs_international_flights),"Domestic")
-    $('#most-flown-from-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_departing_airport)[0][2]}/flat/64.png`);
-    $('#most-flown-to-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_arriving_airport)[0][2]}/flat/64.png`);
+    $('#most-flown-from-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_departing_airport)[0][2]}/shiny/64.png`);
+    $('#most-flown-to-flag').attr("src",`https://flagsapi.com/${JSON.parse(query_data.flights_arriving_airport)[0][2]}/shiny/64.png`);
     console.log(query_data.last_update)
     $('#last-updated-text').html(new Date(query_data.last_update*1000).toLocaleString("en-GB"));
     route_map("graph6", JSON.parse(query_data.popular_routes), "")
