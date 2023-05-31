@@ -5,13 +5,9 @@ import json
 import pandas as pd
 import plotly
 import plotly.express as px
-import pymongo
 import time
 import os
 from utils.connection_string import create_postgres_conn
-
-MONGODB_URI = "mongodb+srv://admin:iloveplanes@ethan-cluster.cr8xduf.mongodb.net/"
-client = pymongo.MongoClient(MONGODB_URI)
 
 api_username = os.getenv("OPENSKY_USERNAME")
 api_password = os.getenv("OPENSKY_PASSWORD")
@@ -19,8 +15,6 @@ api_password = os.getenv("OPENSKY_PASSWORD")
 app = Flask(__name__)
 
 icaos = ["ab1644", "aa9321", "a77ec5"]
-db = client.get_database("aircraft")
-collection = db.get_collection("states")
 
 state_columns = [
     "icao24",
