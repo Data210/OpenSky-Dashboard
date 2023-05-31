@@ -234,6 +234,18 @@ style="top:50%; left:50%; opacity: 0;">
 
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
+                console.log(map.data[0].marker.size)
+                console.log(zoom)
+                if (zoom < 2 || typeof zoom === 'undefined'){
+                    map.data[0].marker.size = 2
+                }
+                else if (zoom > 6){
+                    map.data[0].marker.size = 6
+                }
+                else{
+                    map.data[0].marker.size = zoom
+                }
+                Plotly.redraw('geo-graph')
             });
             map.on('plotly_hover', function (data) {
                 showMasterTooltip(data)
