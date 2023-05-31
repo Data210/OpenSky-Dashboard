@@ -7,6 +7,5 @@ node_modules
 .env
 .mapbox_token
 *.ipynb
-*.png
 dev_only
 *.sql
