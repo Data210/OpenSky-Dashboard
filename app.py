@@ -311,7 +311,7 @@ def plot_states(df):
     global cached_airports
     token = open(".mapbox_token").read()  # you need your own token
     trace = get_states_scattermapbox(df)
-    airports_trace = cached_airports
+    airports_trace = get_airport_trace()
 
     fig = go.Figure()
     fig.add_trace(airports_trace)
