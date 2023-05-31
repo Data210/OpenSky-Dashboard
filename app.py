@@ -292,7 +292,7 @@ def get_airport_trace():
         mode="markers",
         lon=df["longitude"],
         lat=df["latitude"],
-        marker={"size": 4},
+        marker={"size": 2, "color":"rgba(150, 159, 237)"},
         customdata=df[["airport", "type", "iso", "latitude", "longitude"]],
         # hovertemplate="<br>".join(
         #     [

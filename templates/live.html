@@ -72,7 +72,7 @@
     <!-- TRACK GRAPHS -->
     <div
         class="relative block bg-white border border-zinc-200 rounded-lg shadow dark:bg-zinc-900/50 dark:border-zinc-700 overflow-hidden">
-        <div class="w-full h-full">
+        <div id="alti-card" class="w-full h-full">
             <div id="tracks-graph-body" class="w-full h-full hidden">
 
             </div>
@@ -119,6 +119,15 @@ style="top:50%; left:50%; opacity: 0;">
 </div>
 <script src="static/scripts/graphs.js"></script>
 <script>
+    function convert_timestamp_array(array) {
+        var datetime_array = []
+        for (let i = 0; i < array.length; i++) {
+            var date = new Date(array[i]*1000);
+            datetime_array.push(date)
+        }
+        return datetime_array
+    }
+
     function plotAltitude(data) {
         data.line = {
             color: "rgba(150, 159, 240, 237)",
@@ -147,27 +156,41 @@ style="top:50%; left:50%; opacity: 0;">
                 linecolor: "#FFFFFF",
                 color: "#FFFFFF",
                 showgrid: false,
+                zeroline:false,
                 // showticklabels: true,
-                // automargin: true,
-            },
-            yaxis: {
-                linecolor: "rgba(255,255,255,0.3)",
-                color: "rgba(255,255,255,0.5)",
-                showgrid: true,
                 automargin: true,
             },
-            // margin: {
-            //     l: 10,
-            //     r: 10,
-            //     b: 10,
-            //     t: 60,
-            // },
+            yaxis: {
+                linecolor: "#FFFFFF",
+                // color: "rgba(255,255,255,0.5)",
+                gridcolor:"rgba(255,255,255,0.5)",
+                color: "#FFFFFF",
+                showgrid: true,
+                automargin: true,
+                zeroline: false
+            },
+            margin: {
+                l: 10,
+                r: 10,
+                b: 10,
+                t: 60,
+            },
             autosize: true,
             uirevision: true
         }
-        Plotly.react('tracks-graph-body', [data], layout, { responsive: true });
+        var width = document.getElementById('alti-card').offsetWidth;//includes margin,border,padding
+        var height = document.getElementById('alti-card').offsetHeight;
+
+        var update = {
+        width: width,  // or any new width
+        height: height  // " "
+        };
+
+        Plotly.react('tracks-graph-body', [data], layout, config={ responsive: true });
+        Plotly.relayout('tracks-graph-body', update)
+        // console.log(Object.keys(Plotly.Plots.resize()))
     }
-    Plotly.newPlot('tracks-graph-body', [], { autosize: true, uirevision: true }, { responsive: true })
+    // Plotly.newPlot('tracks-graph-body', [], { autosize: true, uirevision: true }, { responsive: true })
     function plotTracks(data) {
         const data2 = {}
         data.type = "scattermapbox",
@@ -211,6 +234,18 @@ style="top:50%; left:50%; opacity: 0;">
 
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
+                console.log(map.data[0].marker.size)
+                console.log(zoom)
+                if (zoom < 2 || typeof zoom === 'undefined'){
+                    map.data[0].marker.size = 2
+                }
+                else if (zoom > 6){
+                    map.data[0].marker.size = 6
+                }
+                else{
+                    map.data[0].marker.size = zoom
+                }
+                Plotly.redraw('geo-graph')
             });
             map.on('plotly_hover', function (data) {
                 showMasterTooltip(data)
@@ -269,10 +304,13 @@ style="top:50%; left:50%; opacity: 0;">
                     });
                     $.get(`https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=0`, function (response) {
                         const time = response.path.map(subArray => subArray[0]);
+                        console.log(time)
                         const latitude = response.path.map(subArray => subArray[1]);
                         const longitude = response.path.map(subArray => subArray[2]);
                         const baro_altitude = response.path.map(subArray => subArray[3]);
-                        plotAltitude({ x: time, y: baro_altitude })
+                        const datetime = convert_timestamp_array(time)
+                        console.log(datetime)
+                        plotAltitude({ x: datetime, y: baro_altitude })
                         plotTracks({ lon: longitude, lat: latitude })
                         $('#track-graph-loadingwheel').hide()
                         $('#tracks-graph-body').show()
@@ -321,6 +359,17 @@ style="top:50%; left:50%; opacity: 0;">
     });
 </script>
 <script>
+    window.addEventListener("resize", () => {
+        var width = document.getElementById('alti-card').offsetWidth;//includes margin,border,padding
+        var height = document.getElementById('alti-card').offsetHeight;
+
+        var update = {
+        width: width,  // or any new width
+        height: height  // " "
+        };
+        Plotly.relayout('tracks-graph-body', update)
+    });
+
     var mouseX = 0;
     var mouseY = 0;
     document.addEventListener("mousemove", function (e) {
