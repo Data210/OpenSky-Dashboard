@@ -38,6 +38,10 @@ state_columns = [
 cached_states = None
 cached_airports = None
 
+mode = os.getenv("MODE")
+if mode is None:
+    raise Exception("MODE not set in environment file.")
+
 
 def get_current_states_v3(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
@@ -542,12 +546,12 @@ def update_flights_cache(query_data):
 def get_updated_graph_data():
     global cached_states
     print("Getting data")
-    cached_states = get_current_states_v3()
+    if mode == 'DEV':
+        cached_states = get_current_states_v3()
     data = cached_states
     fig = plot_states(data)
     print("Returning graph")
     return plotly.io.to_json(fig)
-
 
 query_data = dict()
 update_flights_cache(query_data)
