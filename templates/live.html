@@ -321,7 +321,7 @@
                         data.lat = [data.lat]
                         data.lon = [data.lon]
                         data.customdata = [data.customdata]
-                        Plotly.update('geo-graph', graph_data.data[1], {}, 3)
+                        Plotly.update('geo-graph', graph_data.data[3], {}, 3)
                     });
                     if (current_selected_icao24 !== null) {
                         $.get(`https://opensky-network.org/api/tracks/all?icao24=${current_selected_icao24}&time=0`, function (response) {
