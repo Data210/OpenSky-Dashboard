@@ -243,7 +243,6 @@
                 Plotly.setPlotConfig({ displayModeBar: false, responsive: true, redraw:false});
                 Plotly.update("geo-graph", data, {},[3])
                 console.log("After update", gd.data)
-                Plotly.redraw('geo-graph')
             });
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
