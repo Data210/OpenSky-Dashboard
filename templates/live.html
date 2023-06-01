@@ -80,11 +80,11 @@
             class="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-gray-50 dark:bg-gray-800/0">
             <div role="status">
                 <svg aria-hidden="true"
-                    class="w-full aspect-square text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    class="w-full aspect-square text-gray-200 animate-spin dark:text-gray-600 fill-secondary"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="secondary-color" />
+                        fill="currentColor" />
                     <path
                         d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
                         fill="currentFill" />
@@ -120,7 +120,7 @@
 <script src="static/scripts/graphs.js"></script>
 <script>
     $('#track-graph-loadingwheel').hide()
-        $('#flights-table').hide()
+    $('#flights-table').hide()
     function convert_timestamp_array(array) {
         var datetime_array = []
         for (let i = 0; i < array.length; i++) {
@@ -195,28 +195,25 @@
     // Plotly.newPlot('tracks-graph-body', [], { autosize: true, uirevision: true }, { responsive: true })
     function plotTracks(data) {
         const data2 = {}
-        data.type = "scattermapbox",
-            data2.lat = [[data.lat.at(-1)]]
-        data2.lon = [[data.lon.at(-1)]]
-        data.lat = [data.lat]
-        data.lon = [data.lon]
+        data.type = "scattermapbox";
+        data2.lat = [[data.lat.at(-1)]];
+        data2.lon = [[data.lon.at(-1)]];
+        data.lat = [data.lat];
+        data.lon = [data.lon];
         // data.line = {color:'#ff675f',width:1}
         data.mode = "lines"
         data.hoverinfo = "skip"
-        data2.type = "scattermapbox",
-            data2.marker = { 'size': 10 },
-            data2.mode = "markers"
-        data2.hoverinfo = "skip"
+        data2.type = "scattermapbox";
+        data2.marker = { 'size': 10 };
+        data2.mode = "markers";
+        data2.hoverinfo = "skip";
         // console.log("Data: ",data)
         Plotly.update("geo-graph", data, {}, 1)
         Plotly.update("geo-graph", data2, {}, 2)
         // console.log("In graph: ", document.getElementById("geo-graph").data)
     }
     $(document).ready(function () {
-        // Plotly.redraw('tracks-graph-body')
-        
-        // $('#tracks-graph-body').hide()
-        $.post('/graph-data', function (response) {
+        $.get('/initialise-livemap', function (response) {
             function timeConverter(UNIX_timestamp) {
                 if (UNIX_timestamp == null) return "Not available";
                 var date = new Date(UNIX_timestamp * 1000);
@@ -231,8 +228,23 @@
 
             Plotly.setPlotConfig(config);
             graph_data.layout['uirevision'] = true;
+            console.log(graph_data.data)
             Plotly.newPlot('geo-graph', graph_data.data, graph_data.layout);
 
+            $.get('/graph-data', function (response) {
+                graph_data = JSON.parse(response)
+                let data = {}
+                data.lon = [graph_data.data[0].lon]
+                data.lat = [graph_data.data[0].lat]
+                data.opacity=0.1
+                data.customdata = [graph_data.data[0].customdata]
+                data.marker = graph_data.data[0].marker
+                var gd = document.getElementById('geo-graph')
+                console.log("Before update", gd.data)
+                console.log("Incoming data:", data)
+                Plotly.update("geo-graph", data, {}, [3])
+                console.log("After update", gd.data)
+            });
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
                 if (zoom < 2 || typeof zoom === 'undefined') {
@@ -258,7 +270,7 @@
                     current_selected_icao24 = icao24
                     $('#track-graph-loadingtext').hide()
                     $('#track-graph-loadingwheel').show()
-                    $('tracks-graph-body').hide()
+                    $('#tracks-graph-body').hide()
 
                     if (map.layout.mapbox.center) {
                         map.layout.mapbox.center.lon = data.points['0'].lon
@@ -315,13 +327,18 @@
                 if (!autoUpdate) return;
                 counter -= 1
                 if (counter <= 0) {
-                    $.post('/graph-data', function (response) {
+                    $.get('/graph-data', function (response) {
                         graph_data = JSON.parse(response)
-                        let data = graph_data.data[1]
-                        data.lat = [data.lat]
-                        data.lon = [data.lon]
-                        data.customdata = [data.customdata]
-                        Plotly.update('geo-graph', graph_data.data[3], {}, 3)
+                        let data = {}
+                        data.lon = [graph_data.data[0].lon]
+                        data.lat = [graph_data.data[0].lat]
+                        data.customdata = [graph_data.data[0].customdata]
+                        data.marker = graph_data.data[0].marker
+                        var gd = document.getElementById('geo-graph')
+                        console.log("Before update", gd.data)
+                        console.log("Incoming data:", data)
+                        Plotly.update("geo-graph", data, {}, [3])
+                        console.log("After update", gd.data)
                     });
                     if (current_selected_icao24 !== null) {
                         $.get(`https://opensky-network.org/api/tracks/all?icao24=${current_selected_icao24}&time=0`, function (response) {
@@ -355,6 +372,9 @@
             width: width,  // or any new width
             height: height  // " "
         };
+        if ($('#tracks-graph-body > div.plotly')) {
+
+        }
         Plotly.relayout('tracks-graph-body', update)
     });
 

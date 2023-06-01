@@ -36,7 +36,9 @@ state_columns = [
     "position_source",
 ]
 cached_states = None
+cached_states_trace = None
 cached_airports = None
+cached_scattermapbox = None
 
 mode = os.getenv("MODE")
 if mode is None:
@@ -83,39 +85,6 @@ def get_current_states_v3(count: int = 0):
         df = df.sample(count)
 
     return df
-
-
-def get_current_states_v2(count: int = 0):
-    cursor = collection.find().sort("_id", -1).limit(1)
-    document = cursor.next()
-    df = pd.DataFrame(
-        document["states"],
-        columns=[
-            "icao24",
-            "callsign",
-            "origin_country",
-            "time_position",
-            "last_contact",
-            "longitude",
-            "latitude",
-            "baro_altitude",
-            "on_ground",
-            "velocity",
-            "true_track",
-            "vertical_rate",
-            "sensors",
-            "geo_altitude",
-            "squawk",
-            "spi",
-            "position_source",
-        ],
-    )
-
-    if count > 0:
-        df = df.sample(count)
-
-    return df
-
 
 def get_current_states(number: int = 0):
     url = f"https://opensky-network.org/api/states/all"
@@ -189,7 +158,6 @@ def get_tracks(icao24_list: list):
             or response.status_code == 404
             or response.status_code == 503
         ):
-            print(response.text)
             continue
 
         decoded = json.loads(response.text)
@@ -243,7 +211,30 @@ def plot_altitude(df):
     return fig
 
 
-def get_states_scattermapbox(df):
+def get_states_trace(df):
+    # trace_dict = {
+    #     "mode": "markers",
+    #     "lon": df["longitude"],
+    #     "lat": df["latitude"],
+    #     "hoverinfo": "none",
+    #     "marker": {
+    #         "size": 10,
+    #         "symbol": "airport",
+    #         "angle": rotation_angles,
+    #         "allowoverlap": True,
+    #     },
+    #     "customdata": df[
+    #         [
+    #             "icao24",
+    #             "callsign",
+    #             "origin_country",
+    #             "latitude",
+    #             "longitude",
+    #             "baro_altitude",
+    #             "velocity",
+    #         ]
+    #     ],
+    # }
     rotation_angles = df.true_track.fillna(0)
     trace = go.Scattermapbox(
         mode="markers",
@@ -256,7 +247,7 @@ def get_states_scattermapbox(df):
             "angle": rotation_angles,
             "allowoverlap": True,
         },
-        customdata=df[
+        customdata= df[
             [
                 "icao24",
                 "callsign",
@@ -267,6 +258,10 @@ def get_states_scattermapbox(df):
                 "velocity",
             ]
         ],
+    )
+    fig = go.Figure()
+    fig.add_trace(trace)
+    
     #     hovertemplate="<br>".join(
     #         [
     #             "ICAO24: %{customdata[0]}",
@@ -278,8 +273,8 @@ def get_states_scattermapbox(df):
     #             "Velocity: %{customdata[6]}",
     #         ]
     #     ),
-    )
-    return trace
+    fig_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return fig_json
 
 
 def get_airport_trace():
@@ -308,7 +303,7 @@ def get_airport_trace():
 def plot_states(df):
     global cached_airports
     token = open(".mapbox_token").read()  # you need your own token
-    trace = get_states_scattermapbox(df)
+    trace = get_states_trace(df)
     airports_trace = get_airport_trace()
 
     fig = go.Figure()
@@ -386,10 +381,39 @@ def plot_tracks(df):
     return fig
 
 
-def initalise_graph():
-    fig = plot_states(get_current_states_v2())
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
+def cache_scattermapbox():
+    token = open(".mapbox_token").read()
+    fig = go.Figure()
+    #Airports
+    fig.add_trace(get_airport_trace())
+    #Track line
+    fig.add_trace(go.Scattermapbox(mode="lines", lon=[0], lat=[0], hoverinfo="skip"))
+    #Track endpoint
+    fig.add_trace(go.Scattermapbox(mode="markers", lon=[0], lat=[0], marker={"size": 1}, hoverinfo="skip"))
+    #Aircrafts
+    fig.add_trace(go.Scattermapbox(
+        mode="markers",
+        lon=[1],
+        lat=[1],
+        hoverinfo="none",
+        marker={
+            "size": 0,
+            "symbol": "airport",
+            "angle": [],
+            "allowoverlap": True,
+        },
+        customdata=[],
+    ))
+    fig.update_layout(
+        mapbox={"accesstoken": token, "style": "dark", "zoom": 0}, showlegend=False
+    )
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        uirevision=True,
+    )
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 @app.route("/")
@@ -425,7 +449,12 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/graph-data", methods=["POST"])
+@app.route("/initialise-livemap", methods=["GET"])
+def initialise_map():
+    global cached_scattermapbox
+    return cached_scattermapbox
+
+@app.route("/graph-data", methods=["GET"])
 def graph_data():
     data = get_updated_graph_data()
     return data
@@ -453,51 +482,13 @@ def flight_data(icao24):
     return data
 
 
-@app.route("/plot-track-data/icao24=<icao24>", methods=["POST"])
-def plot_tracks_v2(icao24):
-    # icao24 = request.args['icao24']
-    token = open(".mapbox_token").read()  # you need your own token
-
-    data = get_current_states_v2()
-    states_trace = get_states_scattermapbox(data)
-
-    # token = open(".mapbox_token").read() # you need your own token
-    fig = go.Figure()
-    df = get_tracks([icao24])
-    fig.add_trace(
-        go.Scattermapbox(
-            mode="lines", lon=df["longitude"], lat=df["latitude"], hoverinfo="skip"
-        )
-    )
-    fig.add_trace(
-        go.Scattermapbox(
-            mode="markers",
-            lon=[df["longitude"].iloc[-1]],
-            lat=[df["latitude"].iloc[-1]],
-            marker={"size": 10},
-            hoverinfo="skip",
-        )
-    )
-    fig.add_trace(states_trace)
-
-    fig.update_layout(
-        mapbox={"accesstoken": token, "style": "dark", "zoom": 0}, showlegend=False
-    )
-    fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        # coastlinecolor = '#ffaaaa'
-    )
-    fig.update_geos(oceancolor="#ff0000")
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-
 @app.route("/states", methods=["PUT"])
 def put_state():
     data = request.json
     update_state_cache(data)
+    global cached_states
+    global cached_states_trace
+    cached_states_trace = get_states_trace(cached_states)
     return "OK"
 
 
@@ -507,13 +498,6 @@ def put_flights():
     last_flight_query = time.time()
     update_flights_cache(query_data)
     return "OK"
-
-
-def update_state_cache(data):
-    global cached_states
-    temp_data_df = pd.DataFrame(data, columns=state_columns)
-    cached_states = temp_data_df
-
 
 def update_flights_cache(query_data):
     query_data["last_update"] = time.time()
@@ -543,19 +527,27 @@ def update_flights_cache(query_data):
     query_data["popular_routes"] = get_flights_data("all_routes")
 
 
+def update_state_cache(data):
+    global cached_states
+    temp_data_df = pd.DataFrame(data, columns=state_columns)
+    cached_states = temp_data_df
+
+
+
 def get_updated_graph_data():
     global cached_states
+    global cached_states_trace
     print("Getting data")
     if mode == 'DEV':
         cached_states = get_current_states_v3()
-    data = cached_states
-    fig = plot_states(data)
+        cached_states_trace = get_states_trace(cached_states)
     print("Returning graph")
-    return plotly.io.to_json(fig)
+    return cached_states_trace
 
 query_data = dict()
 update_flights_cache(query_data)
 cached_airports = get_flights_data('all_airports',type='df')
+cached_scattermapbox = cache_scattermapbox()
 
 if __name__ == "__main__":
     app.run(debug=True)
