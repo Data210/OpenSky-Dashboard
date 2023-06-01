@@ -228,7 +228,6 @@
 
             Plotly.setPlotConfig(config);
             graph_data.layout['uirevision'] = true;
-            console.log(graph_data.data)
             Plotly.newPlot('geo-graph', graph_data.data, graph_data.layout);
 
             $.get('/graph-data', function (response) {
