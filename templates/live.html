@@ -102,17 +102,18 @@
 </div>
 </div>
 <div id="masterTooltip"
-    class=" pointer-events-none fixed w-[400px] h-[300px] bg-background/80 rounded-lg border-primary border-1"
+    class=" pointer-events-none fixed w-[450px] h-[300px] bg-background/80 rounded-lg border-primary border-1"
     style="top:50%; left:50%; opacity: 0;">
-    <div class="h-full w-full grid grid-cols-2 grid-rows-6 text-white text-lg p-4 justify-items-center items-center">
-        <div class="col-span-2 text-xl font-bold">ICAO: <span></span></div>
-        <div>Callsign: <span></span></div>
-        <div>Country: <span></span></div>
-        <div>Longitude: <span></span>°</div>
-        <div>Latitude: <span></span>°</div>
-        <div>Altitude: <span></span>m</div>
-        <div>Velocity: <span></span>m/s</div>
-        <img src="static/img/plane_icon.png" class="float-right invert row-start-3 row-end-7 col-start-2">
+    <div class="h-full w-full grid grid-cols-2 grid-rows-6 text-white text-lg p-2 justify-items-center items-center">
+        <div class="col-span-2 text-xl font-bold w-full text-center border-b-2 border-b-white pb-2">ICAO: <span id="tt-icao"></span>
+            (<span id="tt-country" class="font-normal"></span>)</div>
+        <!-- <div class="font-bold">CALLSIGN: </div> -->
+        <div class="font-bold">CALLSIGN: <span id="tt-callsign"  class="font-normal"></span></div>
+        <div  class="font-bold">LONGITUDE: <span id="tt-longitude" class="font-normal"></span>°</div>
+        <div  class="font-bold">LATITUDE: <span id="tt-latitude" class="font-normal"></span>°</div>
+        <div  class="font-bold">AlTITUDE: <span id="tt-altitude" class="font-normal"></span>m</div>
+        <div class="font-bold">VELOCITY: <span id="tt-velocity" class="font-normal"></span>m/s</div>
+        <img src="static/img/plane_icon.png" class="float-right invert row-start-2 row-end-7 col-start-2">
 
     </div>
 
@@ -131,8 +132,10 @@
     }
 
     function plotAltitude(data) {
+        data.fill = 'tozeroy';
+        data.fillcolor = "rgba(150, 159, 240,0.2)",
         data.line = {
-            color: "rgba(150, 159, 240, 237)",
+            color: "rgba(150, 159, 240, 1)",
             width: 3,
             shape: 'spline',
             // smoothing: 1
@@ -146,10 +149,14 @@
                 font: {
                     color: '#FFFFFF',
                     family: 'Helvetica',
-                    size: 24
+                    size: 12
                 },
                 yref: 'container',
-
+                xanchor: 'left',
+                yanchor: 'top',
+                x: 0,
+                y: 1,
+                pad:{l:5,t:10}
                 // automargin: true,
             },
             paper_bgcolor: 'rgba(0,0,0,0)',
@@ -169,13 +176,14 @@
                 color: "#FFFFFF",
                 showgrid: true,
                 automargin: true,
-                zeroline: false
+                zeroline: false,
+
             },
             margin: {
-                l: 10,
+                l: 20,
                 r: 10,
                 b: 10,
-                t: 60,
+                t: 30,
             },
             autosize: true,
             uirevision: true
@@ -391,10 +399,17 @@
     var masterTooltip = $('#masterTooltip').get()[0]
     function showMasterTooltip(data) {
         $('#masterTooltip img').css('transform', `rotate(${data.points[0]['marker.angle']}deg)`);
-        $('#masterTooltip div div').get().forEach((element, i) => {
-            // console.log($(element).find('span')[0])
-            $(element).find('span').html(data.points[0].customdata[i])
-        });
+        // $('#masterTooltip div div').get().forEach((element, i) => {
+        //     // console.log($(element).find('span')[0])
+        //     $(element).find('span').html(data.points[0].customdata[i])
+        // });
+        $('#tt-icao').html(data.points[0].customdata[0])
+        $('#tt-callsign').html(data.points[0].customdata[1])
+        $('#tt-country').html(data.points[0].customdata[2])
+        $('#tt-longitude').html(data.points[0].customdata[3])
+        $('#tt-latitude').html(data.points[0].customdata[4])
+        $('#tt-altitude').html(data.points[0].customdata[5])
+        $('#tt-velocity').html(data.points[0].customdata[6])
 
         let rect = { right: mouseX, left: mouseX, top: mouseY, bottom: mouseY }
         let horizontal;
