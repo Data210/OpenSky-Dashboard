@@ -397,7 +397,7 @@ def cache_scattermapbox():
         lat=[1],
         hoverinfo="none",
         marker={
-            "size": 10,
+            "size": 0,
             "symbol": "airport",
             "angle": [],
             "allowoverlap": True,

@@ -242,6 +242,7 @@
                 console.log("Incoming data:", data)
                 Plotly.update("geo-graph", data, {}, [3])
                 console.log("After update", gd.data)
+                Plotly.redraw('geo-graph')
             });
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
@@ -370,10 +371,9 @@
             width: width,  // or any new width
             height: height  // " "
         };
-        if ($('#tracks-graph-body > div.plotly')) {
-
+        if ($('#tracks-graph-body > div.plot-container').length > 0) {
+            Plotly.relayout('tracks-graph-body', update)
         }
-        Plotly.relayout('tracks-graph-body', update)
     });
 
     var mouseX = 0;
