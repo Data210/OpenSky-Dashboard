@@ -240,9 +240,10 @@
                 var gd = document.getElementById('geo-graph')
                 console.log("Before update", gd.data)
                 console.log("Incoming data:", data)
-                Plotly.setPlotConfig({ displayModeBar: false, responsive: true, redraw:false});
+                Plotly.setPlotConfig({ displayModeBar: false, responsive: true, redraw:true});
                 Plotly.update("geo-graph", data, {},[3])
                 console.log("After update", gd.data)
+                Plotly.redraw("geo-graph")
             });
             map.on('plotly_relayout', function (eventdata) {
                 zoom = eventdata['mapbox.zoom']
