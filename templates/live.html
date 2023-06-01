@@ -244,7 +244,9 @@
                 Plotly.update("geo-graph", data, {},[3])
                 console.log("After update", gd.data)
                 Plotly.redraw("geo-graph")
-                $('#live-map-loadingwheel').hide()
+                window.setTimeout(function(){
+                    $('#live-map-loadingwheel').hide()
+                },1000)
                 
             });
             map.on('plotly_relayout', function (eventdata) {
