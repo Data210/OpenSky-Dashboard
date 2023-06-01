@@ -221,7 +221,7 @@
             }
             graph_data = JSON.parse(response)
             // Update the graph with the received data
-            var config = { displayModeBar: false, responsive: true };
+            var config = { displayModeBar: false, responsive: true, redraw:false};
             var map = document.getElementById('geo-graph');
             var zoom = 0
             var current_selected_icao24 = null
@@ -240,7 +240,8 @@
                 var gd = document.getElementById('geo-graph')
                 console.log("Before update", gd.data)
                 console.log("Incoming data:", data)
-                Plotly.update("geo-graph", data, {}, [3])
+                Plotly.setPlotConfig({ displayModeBar: false, responsive: true, redraw:false});
+                Plotly.update("geo-graph", data, {},[3])
                 console.log("After update", gd.data)
                 Plotly.redraw('geo-graph')
             });
