@@ -58,10 +58,7 @@ A full stack app to provide realtime reporting and visualisation on open-source 
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-
-
-https://github.com/Data210/OpenSky-Dashboard/assets/113981071/7f2c2143-5e11-41d1-9c14-f19d33ee71d5
-
+https://github.com/Data210/OpenSky-Dashboard/assets/113981071/b32c2252-6731-472f-bf59-3fab6554949b
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
