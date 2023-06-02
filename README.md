@@ -56,7 +56,7 @@
 
 A full stack app for visualising bulk analytics and realtime reporting on open-source [OpenSky API](https://openskynetwork.github.io/opensky-api/rest.html) worldwide flight data.
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 
 
