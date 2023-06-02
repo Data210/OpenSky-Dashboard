@@ -84,6 +84,8 @@ https://github.com/Data210/OpenSky-Dashboard/assets/113981071/7f2c2143-5e11-41d1
 ## System Diagram
 <img src="static/img/system_diagram.png" alt="Logo" width="100%" style="border-radius:25px" >
 
+The overall system pipeline starts by extracting the data from the API using serverless Azure Functions. The data that is collected is both live current state of the all current in-flight aircraft and more historical, detailed data about flights that have occured which is collected on a 24 hour period and stored for 7 days in a PostgreSQL Data Warehouse which is modelled using a snowflake schema. The live state data is both immediately sent to the web server to be transformed and displayed, and dumped in AWS S3, for eventual storage. This data is periodically ingested using AWS Glue Jobs to load it into the Data Warehouse, with montioring of the whole AWS process being done through CloudWatch. The Web Server is built using Nginx on an AWS EC2 machine, with the Web App logic being created in Flask using Python and Javascript, then the visualisations of the map, the plots and the website being done using Mapbox, plotly and Tailwind.
+
 
 <!-- LICENSE -->
 ## License
