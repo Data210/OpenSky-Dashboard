@@ -214,7 +214,7 @@ scrollbar scrollbar-thumb-zinc-200 scrollbar-track-zinc-800/100 h-10 overflow-y-
 
         </div>
 
-    </div>  
+    </div>
     <script>
 
         $(document).ready(
@@ -242,6 +242,37 @@ scrollbar scrollbar-thumb-zinc-200 scrollbar-track-zinc-800/100 h-10 overflow-y-
             $('#track-graph-loadingtext').hide()
             $('#tracks-graph-body').show()
             $('#ive-map-loadingwheel').hide()
+            var map = document.getElementById('geo-graph');
+            map.on('plotly_relayout', function (eventdata) {
+                zoom = eventdata['mapbox.zoom']
+                if (zoom < 2 || typeof zoom === 'undefined') {
+                    map.data[0].marker.size = 2
+                }
+                else if (zoom > 6) {
+                    map.data[0].marker.size = 6
+                }
+                else {
+                    map.data[0].marker.size = zoom
+                }
+                Plotly.redraw('geo-graph')
+            });
+            map.on('plotly_hover', function (data) {
+                showMasterTooltip(data)
+            });
+            map.on('plotly_unhover', function (data) {
+                masterTooltip.style.opacity = 0;
+            });
+            map.on('plotly_click', function (data) {
+                if (data.points[0].fullData.name === 'trace 3') {
+                    let icao24 = data.points[0].customdata[0]
+                    current_selected_icao24 = icao24
+                    if (map.layout.mapbox.center) {
+                        map.layout.mapbox.center.lon = data.points['0'].lon
+                        map.layout.mapbox.center.lat = data.points['0'].lat
+                    }
+                    Plotly.redraw('geo-graph')
+                };
+            });
         });
     </script>
     <script>
