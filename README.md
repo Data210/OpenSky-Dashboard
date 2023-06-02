@@ -54,7 +54,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A full stack app for visualising bulk analytics and realtime reporting on open-source [OpenSky API](https://openskynetwork.github.io/opensky-api/rest.html) worldwide flight data.
+A full stack app to provide realtime reporting and visualisation on open-source [OpenSky API](https://openskynetwork.github.io/opensky-api/rest.html) worldwide flight data, with the backend data pipelines and warehousing utilising AWS, Azure and PostgreSQL and the frontend utilising Python, Flask, Javascript, Tailwind and Plotly. The app is split into two sections, the first being the live interactive map displaying global aircraft locations, with the user being able to interact with specific aircraft to display more information. The second section being a bulk analytics dashboard to provide insights on all flights over a 7 day period.
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
