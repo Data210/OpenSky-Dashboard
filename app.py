@@ -82,13 +82,15 @@ def get_current_states_dev(count: int = 0):
     url = f"https://opensky-network.org/api/states/all"
     payload = {}
     headers = {"Cookie": "XSRF-TOKEN=1f3d9767-c581-485b-bb02-f83712c5efe2"}
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request("GET", url, headers=headers, data=payload, auth=('ethanjolly3','ethanjolly3'))
     if (
         response.text == None
         or response.status_code == 404
         or response.status_code == 503
     ):
         print(response.text)
+    print(response.status_code)
+    print('--------------------------------------------------')
     decoded = json.loads(response.text)
     document = decoded
     df = pd.DataFrame(
