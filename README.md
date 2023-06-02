@@ -58,7 +58,8 @@ A full stack app for visualising bulk analytics and realtime reporting on open-s
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-
+<video src="https://github.com/Data210/OpenSky-Dashboard/blob/main/static/video/showcase_video.mp4" controls="controls" style="max-width: 730px;">
+</video>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
